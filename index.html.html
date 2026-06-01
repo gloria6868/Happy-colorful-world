@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Colorful World 🌈</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#7ecbff;min-height:100vh;overflow-x:hidden}
+.scr{display:none;min-height:100vh;flex-direction:column}
+.scr.on{display:flex}
+.hud{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:#fff;border-bottom:3px solid #ffd6eb;flex-shrink:0;flex-wrap:wrap;gap:4px}
+.cpill{background:#fff8c5;border:2px solid #ffd700;border-radius:18px;padding:3px 10px;font-size:13px;font-weight:900;color:#b8860b}
+.htitle{font-size:14px;font-weight:900;color:#c2185b;text-align:center;flex:1;padding:0 4px}
+.bbtn{border:none;color:#fff;border-radius:10px;padding:5px 11px;font-size:12px;font-weight:900;cursor:pointer;flex-shrink:0}
+.fb{background:#00c853;color:#fff;border-radius:7px;padding:1px 6px;font-size:9px;font-weight:900;display:inline-block}
+.tabs{display:flex;gap:5px;padding:6px 10px;flex-shrink:0;overflow-x:auto;background:#fce4ec;border-bottom:2px solid #f48fb1}
+.tab{border:2px solid #f48fb1;border-radius:16px;padding:4px 11px;font-size:11px;font-weight:800;color:#880e4f;cursor:pointer;white-space:nowrap;flex-shrink:0;background:#fff;transition:all .15s}
+.tab.on{background:#e91e8c!important;color:#fff!important;border-color:#e91e8c!important}
+.chip{border:2px solid #f48fb1;border-radius:11px;padding:7px 8px;cursor:pointer;text-align:center;flex-shrink:0;min-width:62px;background:#fff0f8;transition:all .15s}
+.chip:hover,.chip.on{border-color:#e91e8c;background:#fce4ec;transform:scale(1.06)}
+.fcard{background:#fff;border:2px solid #ffcc80;border-radius:13px;padding:8px 6px;text-align:center;cursor:pointer;transition:all .15s}
+.fcard:hover{border-color:#ff9800;transform:scale(1.04)}
+.fcard.inc{border-color:#ff9800;background:#fff8e1}
+.hitem{background:#fff;border:2px solid #ce93d8;border-radius:11px;padding:7px 5px;text-align:center;cursor:pointer;transition:all .15s}
+.hitem:hover{border-color:#9c27b0;transform:scale(1.05)}
+.hitem.placed{border-color:#4caf50;background:#e8f5e9}
+.qopt{border:2px solid #b2dfdb;background:#e0f2f1;border-radius:10px;padding:9px 6px;font-size:12px;font-weight:700;color:#00695c;cursor:pointer;transition:all .15s;text-align:center}
+.qopt:hover{background:#b2dfdb}
+.qopt.rev{background:#00c853!important;color:#fff!important;border-color:#00c853!important}
+.qopt.no{background:#ff1744!important;color:#fff!important;border-color:#ff1744!important}
+.pop{position:fixed;inset:0;background:rgba(0,0,0,.52);display:none;align-items:center;justify-content:center;z-index:500}
+.pop.on{display:flex}
+.pcard{background:#fff;border-radius:20px;padding:22px;text-align:center;max-width:280px;width:90%;border:3px solid #f48fb1}
+.pbtn{border:none;border-radius:11px;padding:9px 22px;font-size:13px;font-weight:900;cursor:pointer;background:#e91e8c;color:#fff;margin:3px}
+.pbtn:hover{background:#c2185b}
+/* Story screen */
+.story-card{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;border:3px solid #ffe0b2;position:relative}
+.story-title{font-size:15px;font-weight:900;color:#e65100;margin-bottom:6px}
+.story-text{font-size:13px;color:#555;line-height:1.7}
+.story-date{font-size:10px;color:#bbb;font-weight:700;margin-top:6px}
+.story-new{position:absolute;top:10px;right:10px;background:#ff1744;color:#fff;border-radius:10px;padding:2px 8px;font-size:9px;font-weight:900}
+.write-area{background:#fff;border-radius:14px;padding:12px;border:3px solid #ce93d8;margin:10px 12px 0;flex-shrink:0}
+.write-area textarea{width:100%;border:2px solid #e0c8ff;border-radius:10px;padding:8px;font-size:13px;resize:vertical;min-height:80px;font-family:inherit;outline:none}
+.write-area textarea:focus{border-color:#9c27b0}
+/* building map - 3D */
+.bld{cursor:pointer;text-align:center;transition:transform .18s,filter .18s;filter:drop-shadow(0 6px 8px rgba(0,0,0,0.28))}
+.bld:hover{transform:scale(1.13) translateY(-6px);filter:drop-shadow(0 12px 16px rgba(0,0,0,0.38))}
+.bld-lbl{font-size:9px;font-weight:900;color:#fff;border-radius:6px;padding:1px 5px;margin-top:2px;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,0.4)}
+.bld-tag{font-size:8px;border-radius:5px;padding:1px 4px;margin-top:1px;display:inline-block}
+.bld-box{border-radius:12px;padding:6px 4px 5px;border-bottom:4px solid rgba(0,0,0,0.22);box-shadow:0 4px 0 rgba(0,0,0,0.18),inset 0 1px 0 rgba(255,255,255,0.3);position:relative;overflow:hidden}
+.bld-box::before{content:'';position:absolute;top:0;left:0;right:0;height:40%;background:rgba(255,255,255,0.18);border-radius:10px 10px 50% 50%/10px 10px 6px 6px;pointer-events:none}
+</style>
+</head>
+<body>
+
+<!-- ===== WORLD MAP ===== -->
+<div id="map" class="scr on">
+  <div class="hud" style="background:linear-gradient(180deg,#bbdefb 0%,#90caf9 100%);border-bottom:3px solid #64b5f6;box-shadow:0 4px 12px rgba(33,150,243,0.25)">
+    <div class="cpill" style="box-shadow:0 3px 6px rgba(0,0,0,0.15)">🪙<span id="coins">500</span></div>
+    <div class="htitle" style="color:#7c4dff;font-size:16px;font-weight:900;text-shadow:0 2px 8px rgba(124,77,255,0.25),0 1px 0 rgba(255,255,255,0.7)">Happy Colorful World 🌈</div>
+    <div id="gdot" style="background:linear-gradient(135deg,#ff1744,#d50000);color:#fff;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:900;cursor:pointer;box-shadow:0 3px 8px rgba(255,23,68,0.4)" onclick="go('gift')">🎁 Gift!</div>
+  </div>
+
+  <div style="flex:1;position:relative;overflow:hidden;min-height:420px">
+    <!-- Sky gradient -->
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,#1a90e8 0%,#5ec5ff 35%,#a8e6ff 60%,#d4f5a0 60%,#7dcf3e 70%,#5aaa20 100%)"></div>
+
+    <!-- Sun with glow -->
+    <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:40px;filter:drop-shadow(0 0 18px #ffe066) drop-shadow(0 0 40px #ffcc00);animation:spin 12s linear infinite">☀️</div>
+
+    <!-- Clouds with depth -->
+    <div style="position:absolute;top:16px;left:20px;font-size:34px;filter:drop-shadow(3px 4px 6px rgba(0,0,0,0.18));animation:floatL 8s ease-in-out infinite">☁️</div>
+    <div style="position:absolute;top:8px;left:160px;font-size:22px;filter:drop-shadow(2px 3px 4px rgba(0,0,0,0.12));animation:floatR 10s ease-in-out infinite">☁️</div>
+    <div style="position:absolute;top:28px;right:100px;font-size:28px;filter:drop-shadow(2px 3px 5px rgba(0,0,0,0.15));animation:floatL 9s ease-in-out infinite 1s">☁️</div>
+    <div style="position:absolute;top:10px;right:20px;font-size:20px;filter:drop-shadow(2px 3px 4px rgba(0,0,0,0.12));animation:floatR 7s ease-in-out infinite 2s">☁️</div>
+
+    <!-- 3D perspective road -->
+    <div style="position:absolute;bottom:80px;left:0;right:0;height:20px;background:linear-gradient(180deg,#b0bec5 0%,#78909c 100%);box-shadow:0 -2px 8px rgba(0,0,0,0.2)">
+      <div style="position:absolute;top:8px;left:5%;right:5%;height:4px;background:repeating-linear-gradient(90deg,#ffd700 0px,#ffd700 18px,transparent 18px,transparent 36px);opacity:0.7;border-radius:2px"></div>
+    </div>
+
+    <!-- Ground with 3D depth -->
+    <div style="position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(180deg,#66bb6a 0%,#43a047 40%,#2e7d32 100%);border-top:3px solid #81c784;box-shadow:inset 0 6px 12px rgba(0,0,0,0.15)"></div>
+
+    <!-- Flowers on ground -->
+    <div style="position:absolute;bottom:78px;left:0;right:0;display:flex;justify-content:space-evenly;font-size:14px;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.2))">
+      <span>🌸</span><span>🌼</span><span>🌻</span><span>🌺</span><span>🌸</span><span>🌼</span><span>🌻</span><span>🌺</span><span>🌸</span><span>🌼</span>
+    </div>
+
+    <!-- 3D Buildings row -->
+    <div style="position:absolute;bottom:96px;left:0;right:0;display:grid;grid-template-columns:repeat(10,1fr);gap:2px;padding:0 4px">
+
+      <div class="bld" onclick="go('dress')">
+        <div class="bld-box" style="background:linear-gradient(145deg,#f06292,#e91e8c)">
+          <div style="font-size:40px;line-height:1;filter:drop-shadow(0 3px 4px rgba(0,0,0,0.3))">🏬</div>
+        </div>
+        <div class="bld-lbl" style="background:rgba(233,30,140,.9)">Dress Shop</div>
+        <div class="bld-tag" style="background:#00c853;color:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.2)">FREE</div>
+      </div>
+
+      <div class="bld" onclick="go('food')">
+        <div class="bld-box" style="background:linear-gradient(145deg,#ffb74d,#ff9800)">
+          <div style="font-size:40px;line-height:1;filter:drop-shadow(0 3px 4px rgba(0,0,0,0.3))">🍔</div>
+        </div>
+        <div class="bld-lbl" style="background:rgba(255,152,0,.95)">Food Market</div>
+        <div class="bld-tag" style="background:#ff9800;color:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.2)">COINS</div>
+      </div>
+
+      <div class="bld" onclick="go('house')">
+        <div class="bld-box" style="background:linear-gradient(145deg,#ba68c8,#9c27b0)">
+          <div style="font-size:40px;line-height:1;filter:drop-shadow(0 3px 4px rgba(0,0,0,0.3))">🏠</div>
+        </div>
+        <div class="bld-lbl" style="background:rgba(156,39,176,.9)">My House</div>
+        <div class="bld-tag" style="background:#00c853;color:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.2)">FREE</div>
+      </div>
+
+      <div class="bld" onclick="go('jump')">
+        <div class="bld-box" style="background:linear-gradient(145deg,#42a5f5,#1565c0)">
+          <div style="font-size:40px;line-height:1;filter:drop-shadow(0 3px 4px rgba(0,0,0,0.3))">🎮</div>
+        </div>
+        <div class="bld-lbl" style="background:rgba(21,101,192,.9)">Jump Game</div>
+        <div class="bld-tag" style="background:#00c853;color:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.2)">FREE</div>
+      </div>
+
+      <div class="bld" onclick="go('shopgame')">
+        <div class="bld-box" style="background:linear-gradient(145deg,#26a69a,#00695c)">
+          <div style="font-size:40px;line-height:1;filter:drop-shadow(0 3px 4px rgba(0,0,0,0.3))">🛒</div>
+        </div>
+        <div class="bld-lbl" style="background:rgba(0,105,92,.9)">Shop Game</div>
+        <div class="bld-tag" style="background:#00c853;color:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.2)">FREE+🪙</div>
+      </div>
+
+      <div class="bld" onclick="go('school')">
+        <div class="bld-box" style="background:linear-gradient(145deg,#26c6da,#00838f)">
+          <div style="font-size:40px;line-height:1;filter:drop-shadow(0 3px 4px rgba(0,0,0,0.3))">🏫</div>
+        </div>
+        <div class="bld-lbl" style="background:rgba(0,137,123,.9)">English School</div>
+        <div class="bld-tag" style="background:#00c853;color:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.2)">FREE+🪙</div>
+      </div>
+
+      <div class="bld" onclick="go('story')">
+        <div class="bld-box" style="background:linear-gradient(145deg,#ff8a65,#e64a19)">
+          <div style="font-size:40px;line-height:1;filter:drop-shadow(0 3px 4px rgba(0,0,0,0.3))">📖</div>
+        </div>
+        <div class="bld-lbl" style="background:rgba(230,74,25,.9)">Story World</div>
+        <div class="bld-tag" style="background:#ff5722;color:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.2)">DAILY</div>
+      </div>
+
+      <div class="bld" onclick="go('gift')">
+        <div class="bld-box" style="background:linear-gradient(145deg,#ffcc02,#f9a825)">
+          <div style="font-size:40px;line-height:1;filter:drop-shadow(0 3px 4px rgba(0,0,0,0.3))">🎁</div>
+        </div>
+        <div class="bld-lbl" style="background:rgba(245,127,23,.9)">Daily Gift</div>
+        <div class="bld-tag" style="background:#00c853;color:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.2)">FREE</div>
+      </div>
+
+      <div class="bld" onclick="go('roblox')">
+        <div class="bld-box" style="background:linear-gradient(145deg,#ef5350,#b71c1c)">
+          <div style="font-size:40px;line-height:1;filter:drop-shadow(0 3px 4px rgba(0,0,0,0.3))">🟥</div>
+        </div>
+        <div class="bld-lbl" style="background:rgba(183,28,28,.9)">Roblox World</div>
+        <div class="bld-tag" style="background:#dc2626;color:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.2)">FREE</div>
+      </div>
+
+      <div class="bld" onclick="go('rabbit')">
+        <div class="bld-box" style="background:linear-gradient(145deg,#f48fb1,#e91e8c)">
+          <div style="font-size:40px;line-height:1;filter:drop-shadow(0 3px 4px rgba(0,0,0,0.3))">🐰</div>
+        </div>
+        <div class="bld-lbl" style="background:rgba(233,30,140,.9)">Bunny Land</div>
+        <div class="bld-tag" style="background:#ff69b4;color:#fff;box-shadow:0 2px 4px rgba(0,0,0,0.2)">FREE</div>
+      </div>
+
+    </div>
+
+    <!-- Walking character with shadow -->
+    <div style="position:absolute;bottom:92px;left:45%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.3))">
+      <div id="mc" style="font-size:44px;transition:left 1.2s ease">🧒</div>
+      <div style="width:36px;height:8px;background:radial-gradient(ellipse,rgba(0,0,0,0.25) 0%,transparent 70%);border-radius:50%;margin:-6px auto 0"></div>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(180deg,#bbdefb,#90caf9);padding:6px;text-align:center;font-size:10px;color:#1565c0;font-weight:800;border-top:2px solid #64b5f6;letter-spacing:.5px;text-shadow:0 1px 0 rgba(255,255,255,0.7)">
+    Tap a building to enter! 🌈 &nbsp;|&nbsp; Green = FREE &nbsp;|&nbsp; Orange = Costs Coins &nbsp;|&nbsp; Red = Daily
+  </div>
+</div>
+
+<style>
+@keyframes spin{0%{transform:translateX(-50%) rotate(0deg)}100%{transform:translateX(-50%) rotate(360deg)}}
+@keyframes floatL{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes floatR{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+</style>
+
+<!-- ===== DRESS SHOP ===== -->
+<div id="dress" class="scr">
+  <div class="hud" style="background:#fce4ec;border-bottom-color:#f48fb1">
+    <button class="bbtn" style="background:#e91e8c" onclick="go('map')">← Back</button>
+    <div class="htitle">Dress Up Shop <span class="fb">ALL FREE</span></div>
+    <div class="cpill">🪙<span id="dc">500</span></div>
+  </div>
+  <div style="background:#fce4ec;padding:7px 0 5px;flex-shrink:0">
+    <div id="cp" style="font-size:60px;text-align:center;min-height:70px;line-height:1.1"></div>
+    <div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap;padding:0 10px;margin-top:3px">
+      <div style="font-size:10px;font-weight:800;color:#880e4f;background:#fff;border-radius:7px;padding:2px 7px">Hat: <span id="lh">none</span></div>
+      <div style="font-size:10px;font-weight:800;color:#880e4f;background:#fff;border-radius:7px;padding:2px 7px">Outfit: <span id="lo">none</span></div>
+      <div style="font-size:10px;font-weight:800;color:#880e4f;background:#fff;border-radius:7px;padding:2px 7px">Shoes: <span id="ls">none</span></div>
+    </div>
+  </div>
+  <div class="tabs" id="dtabs"></div>
+  <div style="flex:1;overflow-y:auto;padding:8px 10px;background:#fff" id="dpanel"></div>
+  <div style="background:#fce4ec;padding:7px 10px;display:flex;gap:7px;flex-shrink:0">
+    <button style="flex:1;background:#e91e8c;color:#fff;border:none;border-radius:11px;padding:9px;font-size:13px;font-weight:900;cursor:pointer" onclick="spop('💅','Outfit Saved!','Your look is fabulous! Everything is FREE here! 🎀')">Save Outfit!</button>
+    <button style="flex:1;background:#eee;color:#888;border:none;border-radius:11px;padding:9px;font-size:13px;font-weight:900;cursor:pointer" onclick="clearOF()">Clear</button>
+  </div>
+</div>
+
+<!-- ===== FOOD MARKET ===== -->
+<div id="food" class="scr">
+  <div class="hud" style="background:#fff3e0;border-bottom-color:#ffcc80">
+    <button class="bbtn" style="background:#ff9800" onclick="go('map')">← Back</button>
+    <div class="htitle" style="color:#e65100">Food Market <span style="background:#ff9800;color:#fff;border-radius:7px;padding:1px 6px;font-size:9px;font-weight:900">COSTS COINS</span></div>
+    <div class="cpill">🪙<span id="fc2">500</span></div>
+  </div>
+  <div class="tabs" style="background:#fff3e0;border-bottom-color:#ffcc80" id="ftabs"></div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px;flex:1;overflow-y:auto" id="fgrid"></div>
+  <div style="background:#fff3e0;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;border-top:2px solid #ffcc80">
+    <div style="font-size:12px;font-weight:800;color:#e65100">Cart: <span id="fc">0</span> items | 🪙<span id="ft">0</span></div>
+    <button style="background:#ff9800;color:#fff;border:none;border-radius:11px;padding:7px 14px;font-size:13px;font-weight:900;cursor:pointer" onclick="buyFood()">Buy All! 🛒</button>
+  </div>
+</div>
+
+<!-- ===== MY HOUSE ===== -->
+<div id="house" class="scr">
+  <div class="hud" style="background:#f3e5f5;border-bottom-color:#ce93d8">
+    <button class="bbtn" style="background:#9c27b0" onclick="go('map')">← Back</button>
+    <div class="htitle" style="color:#6a1b9a">My House <span class="fb">ALL FREE</span></div>
+    <div class="cpill">🪙<span id="hc">500</span></div>
+  </div>
+  <div style="flex:1;position:relative;overflow:hidden;min-height:200px">
+    <div style="position:absolute;top:0;left:0;right:0;bottom:52px;background:linear-gradient(180deg,#ffe3f0 0%,#fce4ec 100%)"></div>
+    <div style="position:absolute;bottom:0;left:0;right:0;height:52px;background:#d4a96a;border-top:4px solid #b8860b"></div>
+    <div id="cr" style="position:absolute;bottom:48px;left:50%;transform:translateX(-50%);font-size:46px">🧒</div>
+    <div id="ri"></div>
+  </div>
+  <div class="tabs" style="background:#f3e5f5;border-bottom-color:#ce93d8" id="htabs"></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px;overflow-y:auto;max-height:190px;background:#fce4ec;flex-shrink:0" id="hgrid"></div>
+</div>
+
+<!-- ===== JUMP GAME ===== -->
+<div id="jump" class="scr">
+  <div class="hud" style="background:#1565c0;border-bottom-color:#1976d2">
+    <button class="bbtn" style="background:#0d47a1" onclick="go('map')">← Back</button>
+    <div class="htitle" style="color:#fff">Jump & Spell! <span class="fb">FREE</span></div>
+    <div style="background:#0d47a1;border-radius:14px;padding:3px 9px;font-size:13px;font-weight:900;color:#fff">⭐<span id="js">0</span></div>
+  </div>
+  <canvas id="jc" style="width:100%;flex:1;display:block;cursor:pointer"></canvas>
+  <div style="flex-shrink:0;padding:7px 12px 9px;text-align:center;background:#1565c0;color:#fff">
+    <div style="font-size:9px;font-weight:800;opacity:.8;margin-bottom:2px">JUMP ON LETTERS TO SPELL THE WORD! AVOID ROCKS! Spell = +🪙5</div>
+    <div id="jwt" style="font-size:24px;font-weight:900;letter-spacing:3px">CAT</div>
+    <div id="jwp" style="font-size:17px;letter-spacing:4px;margin-top:2px;color:rgba(255,255,255,.7)">_ _ _</div>
+  </div>
+</div>
+
+<!-- ===== SHOPPING ENGLISH GAME ===== -->
+<div id="shopgame" class="scr">
+  <div class="hud" style="background:#00695c;border-bottom-color:#00897b">
+    <button class="bbtn" style="background:#004d40" onclick="go('map')">← Back</button>
+    <div class="htitle" style="color:#fff">Shopping English <span class="fb">FREE + Earn Coins</span></div>
+    <div class="cpill">🪙<span id="sgc">500</span></div>
+  </div>
+  <div class="tabs" style="background:#e0f2f1;border-bottom-color:#80cbc4" id="sgtabs"></div>
+  <div style="flex:1;overflow-y:auto;padding:10px" id="sgbox"></div>
+</div>
+
+<!-- ===== ENGLISH SCHOOL ===== -->
+<div id="school" class="scr">
+  <div class="hud" style="background:#00897b;border-bottom-color:#00695c">
+    <button class="bbtn" style="background:#004d40" onclick="go('map')">← Back</button>
+    <div class="htitle" style="color:#fff">English School <span class="fb">FREE + Earn Coins</span></div>
+    <div class="cpill">🪙<span id="sc2">500</span></div>
+  </div>
+  <div class="tabs" style="background:#e0f2f1;border-bottom-color:#80cbc4" id="sctabs"></div>
+  <div style="flex:1;overflow-y:auto;padding:10px" id="qbox"></div>
+</div>
+
+<!-- ===== STORY WORLD ===== -->
+<div id="story" class="scr">
+  <div class="hud" style="background:#fff3e0;border-bottom-color:#ffccbc">
+    <button class="bbtn" style="background:#ff5722" onclick="go('map')">← Back</button>
+    <div class="htitle" style="color:#bf360c">Story World 📖 <span class="fb" style="background:#ff5722">DAILY</span></div>
+    <div class="cpill">🪙<span id="stc">500</span></div>
+  </div>
+  <!-- Story tabs -->
+  <div class="tabs" style="background:#fff3e0;border-bottom-color:#ffccbc">
+    <div class="tab on" id="stab1" style="border-color:#ff5722;color:#ff5722" onclick="showStoryTab('read')">📚 Read Stories</div>
+    <div class="tab" id="stab2" style="border-color:#ff5722;color:#ff5722" onclick="showStoryTab('write')">✏️ Write a Story</div>
+    <div class="tab" id="stab3" style="border-color:#ff5722;color:#ff5722" onclick="showStoryTab('today')">⭐ Today's Story</div>
+  </div>
+
+  <!-- READ tab -->
+  <div id="storyRead" style="flex:1;overflow-y:auto;padding:12px"></div>
+
+  <!-- WRITE tab -->
+  <div id="storyWrite" style="display:none;flex-direction:column;flex:1">
+    <div style="flex:1;overflow-y:auto;padding:12px">
+      <div style="background:#fff;border-radius:16px;padding:14px;border:3px solid #ffccbc;margin-bottom:10px">
+        <div style="font-size:14px;font-weight:900;color:#bf360c;margin-bottom:6px">✏️ Write Your Own Story!</div>
+        <div style="font-size:12px;color:#888;margin-bottom:10px">Share a story for your daughter to read today! Give it a fun title and write the story below.</div>
+        <div style="margin-bottom:8px">
+          <label style="font-size:11px;font-weight:800;color:#e65100;display:block;margin-bottom:4px">Story Title:</label>
+          <input id="storyTitleIn" type="text" placeholder="e.g. The Magic Rainbow Dragon..." style="width:100%;border:2px solid #ffccbc;border-radius:9px;padding:8px;font-size:13px;outline:none;font-family:inherit">
+        </div>
+        <div style="margin-bottom:8px">
+          <label style="font-size:11px;font-weight:800;color:#e65100;display:block;margin-bottom:4px">Story Emoji (pick one):</label>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="story-emoji-pick" onclick="pickEmoji('🐉')" style="font-size:24px;cursor:pointer;padding:4px;border-radius:8px;background:#fff;border:2px solid #ffccbc">🐉</span>
+            <span class="story-emoji-pick" onclick="pickEmoji('🌈')" style="font-size:24px;cursor:pointer;padding:4px;border-radius:8px;background:#fff;border:2px solid #ffccbc">🌈</span>
+            <span class="story-emoji-pick" onclick="pickEmoji('🧚')" style="font-size:24px;cursor:pointer;padding:4px;border-radius:8px;background:#fff;border:2px solid #ffccbc">🧚</span>
+            <span class="story-emoji-pick" onclick="pickEmoji('🦄')" style="font-size:24px;cursor:pointer;padding:4px;border-radius:8px;background:#fff;border:2px solid #ffccbc">🦄</span>
+            <span class="story-emoji-pick" onclick="pickEmoji('🐬')" style="font-size:24px;cursor:pointer;padding:4px;border-radius:8px;background:#fff;border:2px solid #ffccbc">🐬</span>
+            <span class="story-emoji-pick" onclick="pickEmoji('🏰')" style="font-size:24px;cursor:pointer;padding:4px;border-radius:8px;background:#fff;border:2px solid #ffccbc">🏰</span>
+            <span class="story-emoji-pick" onclick="pickEmoji('🌙')" style="font-size:24px;cursor:pointer;padding:4px;border-radius:8px;background:#fff;border:2px solid #ffccbc">🌙</span>
+            <span class="story-emoji-pick" onclick="pickEmoji('🐠')" style="font-size:24px;cursor:pointer;padding:4px;border-radius:8px;background:#fff;border:2px solid #ffccbc">🐠</span>
+            <span class="story-emoji-pick" onclick="pickEmoji('🌺')" style="font-size:24px;cursor:pointer;padding:4px;border-radius:8px;background:#fff;border:2px solid #ffccbc">🌺</span>
+            <span class="story-emoji-pick" onclick="pickEmoji('⭐')" style="font-size:24px;cursor:pointer;padding:4px;border-radius:8px;background:#fff;border:2px solid #ffccbc">⭐</span>
+            <span id="pickedEmoji" style="font-size:13px;font-weight:800;color:#e65100;align-self:center">Selected: 🐉</span>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:800;color:#e65100;display:block;margin-bottom:4px">Your Story:</label>
+          <textarea id="storyTextIn" placeholder="Once upon a time..." style="width:100%;border:2px solid #ffccbc;border-radius:9px;padding:8px;font-size:13px;resize:vertical;min-height:120px;font-family:inherit;outline:none"></textarea>
+        </div>
+        <button onclick="publishStory()" style="width:100%;margin-top:10px;background:#ff5722;color:#fff;border:none;border-radius:11px;padding:11px;font-size:14px;font-weight:900;cursor:pointer">📖 Publish Story!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TODAY tab -->
+  <div id="storyToday" style="display:none;flex:1;overflow-y:auto;padding:12px"></div>
+</div>
+
+<!-- ===== ROBLOX WORLD ===== -->
+<div id="roblox" class="scr">
+  <div class="hud" style="background:#1a1a2e;border-bottom:3px solid #dc2626">
+    <button class="bbtn" style="background:#dc2626" onclick="go('map')">← Back</button>
+    <div class="htitle" style="color:#fff;font-size:14px">🟥 Roblox World <span class="fb" style="background:#dc2626">FREE</span></div>
+    <div class="cpill" style="background:#16213e;border-color:#dc2626;color:#ffd700">🪙<span id="rbc">500</span></div>
+  </div>
+  <!-- Roblox tabs -->
+  <div class="tabs" style="background:#16213e;border-bottom:2px solid #dc2626">
+    <div class="tab on" id="rbtab1" style="border-color:#dc2626;color:#dc2626;background:#fff" onclick="showRbTab('avatar')">🧍 My Avatar</div>
+    <div class="tab" id="rbtab2" style="border-color:#dc2626;color:#dc2626;background:#1a1a2e" onclick="showRbTab('obby')">🏃 Obby Game</div>
+    <div class="tab" id="rbtab3" style="border-color:#dc2626;color:#dc2626;background:#1a1a2e" onclick="showRbTab('tycoon')">🏗️ Tycoon</div>
+    <div class="tab" id="rbtab4" style="border-color:#dc2626;color:#dc2626;background:#1a1a2e" onclick="showRbTab('adopt')">🐾 Adopt a Pet</div>
+    <div class="tab" id="rbtab5" style="border-color:#dc2626;color:#dc2626;background:#1a1a2e" onclick="showRbTab('catalog')">🛍️ Catalog</div>
+  </div>
+  <div id="rbContent" style="flex:1;overflow-y:auto"></div>
+</div>
+
+<!-- ===== DAILY GIFT ===== -->
+<div id="gift" class="scr">
+  <div class="hud" style="background:#fff9c4;border-bottom-color:#fff176">
+    <button class="bbtn" style="background:#f9a825" onclick="go('map')">← Back</button>
+    <div class="htitle" style="color:#f57f17">Daily Gift <span class="fb">FREE</span></div>
+    <div class="cpill">🪙<span id="gc">500</span></div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:12px" id="gw"></div>
+</div>
+
+<!-- ===== BUNNY LAND ===== -->
+<div id="rabbit" class="scr">
+  <div class="hud" style="background:#ff69b4;border-bottom:3px solid #ff1493">
+    <button class="bbtn" style="background:#ff1493" onclick="go('map')">← Back</button>
+    <div class="htitle" style="color:#fff;font-size:14px">🐰 Bunny Land <span class="fb" style="background:#ff1493">FREE</span></div>
+    <div class="cpill" style="background:#fff0f8;border-color:#ff69b4;color:#c2185b">🥕<span id="rbCarrots">0</span></div>
+  </div>
+  <div class="tabs" style="background:#ffe4f0;border-bottom:2px solid #ff69b4">
+    <div class="tab on" id="rbtab_hop"   style="border-color:#ff69b4;color:#ff1493" onclick="showBunTab('hop')">🏃 Bunny Hop</div>
+    <div class="tab"    id="rbtab_dress" style="border-color:#ff69b4;color:#ff1493" onclick="showBunTab('dress')">👗 Dress Bunny</div>
+    <div class="tab"    id="rbtab_feed"  style="border-color:#ff69b4;color:#ff1493" onclick="showBunTab('feed')">🥕 Feed Time</div>
+    <div class="tab"    id="rbtab_match" style="border-color:#ff69b4;color:#ff1493" onclick="showBunTab('match')">🃏 Match Cards</div>
+    <div class="tab"    id="rbtab_garden"style="border-color:#ff69b4;color:#ff1493" onclick="showBunTab('garden')">🌷 Bunny Garden</div>
+  </div>
+  <div id="bunContent" style="flex:1;overflow-y:auto;background:#fff8fc"></div>
+</div>
+
+<!-- POPUP -->
+<div class="pop" id="pop">
+  <div class="pcard">
+    <div style="font-size:50px;margin-bottom:6px" id="pe">🎉</div>
+    <div style="font-size:18px;font-weight:900;color:#880e4f;margin-bottom:5px" id="pt">Yay!</div>
+    <div style="font-size:12px;color:#c2185b;margin-bottom:12px;line-height:1.5" id="pm">Great!</div>
+    <button class="pbtn" onclick="cpop()">OK! 🌟</button>
+  </div>
+</div>
+
+<script>
+// ===== STATE =====
+var coins=500,giftDone=false;
+var OF={hat:null,hC:null,cl:null,clC:null,sh:null,shC:null};
+var placed=[],cart=[];
+var _dc='Hats',_fc='Snacks',_hc='Bedroom';
+var sCat=0,sgCat=0;
+var qs={cat:0,idx:0,score:0,done:false};
+var sgs={cat:0,idx:0,score:0,done:false};
+var jRun=false,jRaf=null;
+var jp,jObs,jLets,jFr,jSp,jSc,jWL,jCW,jCL;
+var stories=[];
+var pickedEm='🐉';
+var storyTab='read';
+
+// ===== DATA =====
+var WD={
+  Hats:[{e:'🎀',n:'Bow',t:'hat'},{e:'👒',n:'Sun Hat',t:'hat'},{e:'🎩',n:'Top Hat',t:'hat'},{e:'👑',n:'Crown',t:'hat'},{e:'🧢',n:'Cap',t:'hat'},{e:'🌸',n:'Flower',t:'hat'},{e:'🎓',n:'Grad',t:'hat'},{e:'🪖',n:'Helmet',t:'hat'}],
+  Clothes:[{e:'👗',n:'Dress',t:'cl'},{e:'👘',n:'Kimono',t:'cl'},{e:'🥻',n:'Sari',t:'cl'},{e:'🧥',n:'Coat',t:'cl'},{e:'👚',n:'T-Shirt',t:'cl'},{e:'🩱',n:'Swimsuit',t:'cl'},{e:'👔',n:'Shirt',t:'cl'},{e:'🩳',n:'Shorts',t:'cl'},{e:'🥿',n:'Skirt',t:'cl'}],
+  Shoes:[{e:'👡',n:'Heels',t:'sh'},{e:'👟',n:'Sneakers',t:'sh'},{e:'🥾',n:'Boots',t:'sh'},{e:'👞',n:'Oxfords',t:'sh'},{e:'🩴',n:'Sandals',t:'sh'},{e:'🛹',n:'Skates',t:'sh'}],
+  Accessories:[{e:'👜',n:'Bag',t:'acc'},{e:'💍',n:'Ring',t:'acc'},{e:'📿',n:'Necklace',t:'acc'},{e:'🕶️',n:'Sunnies',t:'acc'},{e:'🧣',n:'Scarf',t:'acc'},{e:'🎒',n:'Backpack',t:'acc'}],
+};
+var FD={
+  Snacks:[{e:'🍦',n:'Ice Cream',p:12},{e:'🍭',n:'Lollipop',p:8},{e:'🧁',n:'Cupcake',p:10},{e:'🍩',n:'Donut',p:9},{e:'🍫',n:'Chocolate',p:11},{e:'🍪',n:'Cookie',p:7}],
+  Meals:[{e:'🍕',n:'Pizza',p:28},{e:'🍔',n:'Burger',p:22},{e:'🍜',n:'Ramen',p:24},{e:'🌮',n:'Taco',p:18},{e:'🍣',n:'Sushi',p:32},{e:'🥗',n:'Salad',p:15}],
+  Drinks:[{e:'🧃',n:'Juice',p:6},{e:'🧋',n:'Bubble Tea',p:9},{e:'🍹',n:'Smoothie',p:8},{e:'🥤',n:'Soda',p:5},{e:'☕',n:'Cocoa',p:7},{e:'🍵',n:'Tea',p:6}],
+};
+var HD={
+  Bedroom:[{e:'🛏️',n:'Bed'},{e:'🪞',n:'Mirror'},{e:'🛋️',n:'Sofa'},{e:'🪴',n:'Plant'},{e:'🛁',n:'Bath'},{e:'🧸',n:'Teddy'},{e:'💡',n:'Lamp'},{e:'🚿',n:'Shower'}],
+  Living:[{e:'📺',n:'TV'},{e:'🖼️',n:'Painting'},{e:'🪑',n:'Chair'},{e:'🎮',n:'Console'},{e:'📚',n:'Books'},{e:'🕰️',n:'Clock'},{e:'🎸',n:'Guitar'},{e:'🎹',n:'Piano'}],
+  Garden:[{e:'🌳',n:'Tree'},{e:'🌻',n:'Sunflower'},{e:'⛲',n:'Fountain'},{e:'🦜',n:'Parrot'},{e:'🐶',n:'Dog'},{e:'🐱',n:'Cat'},{e:'🌈',n:'Rainbow'},{e:'🏡',n:'Gazebo'}],
+};
+var JW=['CAT','DOG','SUN','FUN','RUN','BIG','HAT','FLY','HOP','RED','CUP','ANT','JAM','TOP','MAP','BEE','CUB','JOY','PIG','SKY','MOP','DIG','WAX','FAN','ZAP'];
+var SCDATA=[
+  {cat:'Shapes',qs:[{e:'🔴',q:'What shape is a ball?',o:['Square','Circle','Triangle','Star'],a:1,x:'A circle is perfectly round!'},{e:'🟥',q:'How many sides does a rectangle have?',o:['3','5','4','6'],a:2,x:'A rectangle has 4 sides!'},{e:'⭐',q:'How many points does a star have?',o:['4','6','3','5'],a:3,x:'A star has 5 points!'},{e:'🔺',q:'What shape has 3 sides?',o:['Circle','Square','Triangle','Diamond'],a:2,x:'A triangle has 3 sides!'}]},
+  {cat:'Colors',qs:[{e:'🌈',q:'What color comes after red in a rainbow?',o:['Blue','Green','Orange','Purple'],a:2,x:'Red, ORANGE, yellow...'},{e:'🎨',q:'Red + Blue = ?',o:['Green','Yellow','Orange','Purple'],a:3,x:'Red + Blue = Purple!'},{e:'🌊',q:'What color is the ocean?',o:['Red','Green','Blue','Yellow'],a:2,x:'The ocean is Blue!'},{e:'🍀',q:'What color are leaves?',o:['Pink','Green','Blue','Orange'],a:1,x:'Leaves are Green!'}]},
+  {cat:'Animals',qs:[{e:'🐘',q:'Which animal has a trunk?',o:['Lion','Giraffe','Elephant','Zebra'],a:2,x:'An Elephant has a trunk!'},{e:'🦒',q:'Longest neck animal?',o:['Horse','Giraffe','Camel','Llama'],a:1,x:'Giraffe has the longest neck!'},{e:'🐝',q:'Bees make ___ .',o:['Milk','Juice','Honey','Butter'],a:2,x:'Bees make Honey!'},{e:'🦁',q:'A baby lion is called a ___ .',o:['Puppy','Kitten','Cub','Foal'],a:2,x:'A baby lion is a Cub!'}]},
+  {cat:'Numbers',qs:[{e:'🔢',q:'What is 5 + 3?',o:['7','8','9','6'],a:1,x:'5 + 3 = 8!'},{e:'🧮',q:'What is 10 - 4?',o:['5','7','6','8'],a:2,x:'10 - 4 = 6!'},{e:'⭐',q:'Spell "seven":',o:['Sevan','Seven','Sevn','Saven'],a:1,x:'S-E-V-E-N!'},{e:'🔟',q:'Which is biggest?',o:['9','6','10','7'],a:2,x:'10 is the biggest!'}]},
+];
+var SGDATA=[
+  {cat:'Shopping',qs:[{e:'🛒',q:'Polite way to buy something?',o:['Give me!','I would like this, please','Mine!','Take it!'],a:1,x:'"I would like this, please" is polite!'},{e:'💰',q:'How to ask for the price?',o:['What color?','Is it free?','How much is this?','I want it!'],a:2,x:'"How much is this?" is correct!'},{e:'🏷️',q:'Opposite of "expensive":',o:['Costly','Pricey','Cheap','Luxury'],a:2,x:'"Cheap" is the opposite!'},{e:'🧥',q:'I want to ___ this jacket.',o:['try on','put away','give up','throw away'],a:0,x:'"Try on" = wear to see if it fits!'},{e:'🎉',q:'Everything is 50% off — it\'s a ___ !',o:['parade','sale','party','race'],a:1,x:'"Sale" means discounts!'}]},
+  {cat:'Restaurant',qs:[{e:'🍽️',q:'How to ask for a table politely?',o:['Give me a table!','Table for two, please','I am hungry!','Feed me now'],a:1,x:'"Table for two, please" is polite!'},{e:'📋',q:'May I see the ___ ? (list of food)',o:['bill','menu','recipe','order'],a:1,x:'"Menu" = list of food & drinks!'},{e:'😋',q:'Word meaning very hungry:',o:['full','stuffed','starving','satisfied'],a:2,x:'"Starving" = extremely hungry!'},{e:'😊',q:'"Enjoy your meal!" — you reply:',o:['Whatever','Finally!','Thank you!','About time!'],a:2,x:'"Thank you!" is always right!'},{e:'✏️',q:'Which sentence is correct?',o:['I would like a burger, please','I wanting burger','Me want burger','Burger give me'],a:0,x:'"I would like" is correct!'}]},
+  {cat:'Fashion',qs:[{e:'👗',q:'Clothes for exercise are called:',o:['formal','casual','sportswear','uniform'],a:2,x:'"Sportswear" = exercise clothes!'},{e:'👖',q:'Opposite of "tight" clothes:',o:['small','narrow','loose','thin'],a:2,x:'"Loose" is the opposite!'},{e:'🧥',q:'I wear a ___ when cold outside.',o:['swimsuit','jacket','shorts','sandals'],a:1,x:'"Jacket" keeps you warm!'},{e:'💃',q:'She ___ a red dress to the party.',o:['wear','wears','wore','wearing'],a:2,x:'"Wore" is past tense!'},{e:'🎨',q:'"A ___ red skirt" — what goes first?',o:['big','beautiful','nice','pretty'],a:1,x:'Opinion before color: "beautiful red"!'}]},
+];
+
+// Default stories from dad
+var defaultStories=[
+  {title:'The Little Star Who Was Afraid of the Dark',emoji:'⭐',text:'Once upon a time, high up in the sky, there was a tiny little star named Lumie. Every night, all the other stars would shine brightly, but Lumie was scared. "What if I am not bright enough?" Lumie worried.\n\nBut one night, a little girl looked up at the sky and pointed right at Lumie. "Mommy, that star is my favorite!" she said.\n\nLumie heard this and began to glow so brightly that all the other stars cheered. From that night on, Lumie was never afraid again — because sometimes, all you need is one person who believes in you. 🌟',date:'Yesterday',isNew:false,fromDad:true},
+  {title:'The Rainbow Fish Who Shared Her Colors',emoji:'🐠',text:'Deep in the sparkling ocean lived a fish named Coral. She had the most beautiful rainbow scales anyone had ever seen. But Coral never shared them — until one day, a little silver fish swam up to her.\n\n"Please, Coral," said the silver fish, "may I have just one of your beautiful scales? I feel so plain."\n\nCoral thought for a long time. Then, slowly, she peeled off her shiniest scale and gave it away. Suddenly she felt warmth in her heart she had never felt before.\n\nShe gave away more and more scales, and with every one she shared, she made a new friend. In the end, Coral was the happiest fish in the sea — because happiness grows when you share it. 🌊🐠',date:'2 days ago',isNew:false,fromDad:true},
+  {title:"The Dragon Who Didn't Want to Breathe Fire",emoji:'🐉',text:'Drago was a small purple dragon who lived in a cozy cave on a hill. All the other dragons practiced breathing fire every day. But Drago didn\'t want to.\n\n"I want to breathe bubbles," Drago said quietly.\n\nThe other dragons laughed. But Drago kept trying. One day, Drago took a deep breath and — POP! POP! POP! — out came hundreds of beautiful, shimmering bubbles that floated all over the village!\n\nThe children in the village ran out, laughing and chasing the bubbles. Even the king clapped his hands with joy.\n\n"You see," said Drago\'s mother with a smile, "being different is your superpower." 🫧',date:'3 days ago',isNew:false,fromDad:true},
+];
+
+// ===== HELPERS =====
+function uc(){
+  ['coins','dc','fc2','hc','sc2','gc','sgc','stc','rbc'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=coins;});
+  updateCarrots();
+}
+function go(id){
+  stopJ();stopObby();stopBunHop();
+  document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on');});
+  document.getElementById(id).classList.add('on');
+  if(id==='dress')iDress();
+  else if(id==='food')iFood();
+  else if(id==='house')iHouse();
+  else if(id==='jump')iJump();
+  else if(id==='shopgame')iSG();
+  else if(id==='school')iSch();
+  else if(id==='story')iStory();
+  else if(id==='gift')iGift();
+  else if(id==='roblox'){showRbTab('avatar');}
+  else if(id==='rabbit'){showBunTab('hop');}
+}
+function spop(e,t,m){document.getElementById('pe').textContent=e;document.getElementById('pt').textContent=t;document.getElementById('pm').textContent=m;document.getElementById('pop').classList.add('on');}
+function cpop(){document.getElementById('pop').classList.remove('on');}
+
+// ===== DRESS =====
+function iDress(){
+  var cats=Object.keys(WD);
+  document.getElementById('dtabs').innerHTML=cats.map(function(c){return '<div class="tab'+((_dc===c)?' on':'')+'" style="border-color:#f48fb1;color:'+(_dc===c?'#fff':'#880e4f')+';background:'+(_dc===c?'#e91e8c':'#fff')+'" onclick="sDC(\''+c+'\')">'+c+'</div>';}).join('');
+  rDP();rCP();
+}
+function sDC(c){_dc=c;iDress();}
+function rDP(){
+  var items=WD[_dc]||[];
+  document.getElementById('dpanel').innerHTML='<div style="display:flex;gap:6px;flex-wrap:wrap">'+items.map(function(it,i){
+    var sel=(OF[it.t]===i&&OF[it.t+'C']===_dc);
+    return '<div class="chip'+(sel?' on':'')+'" onclick="wI(\''+_dc+'\','+i+')"><div style="font-size:24px">'+it.e+'</div><div style="font-size:9px;font-weight:700;color:#880e4f;margin-top:1px">'+it.n+'</div><div style="font-size:9px;font-weight:900;color:#00c853">FREE</div></div>';
+  }).join('')+'</div>';
+}
+function wI(cat,i){
+  var it=WD[cat][i];
+  if(OF[it.t]===i&&OF[it.t+'C']===cat){OF[it.t]=null;OF[it.t+'C']=null;}
+  else{OF[it.t]=i;OF[it.t+'C']=cat;}
+  var lbls={hat:'lh',cl:'lo',sh:'ls'};
+  if(lbls[it.t]){var el=document.getElementById(lbls[it.t]);if(el)el.textContent=OF[it.t]!==null?it.n:'none';}
+  rCP();rDP();
+}
+function rCP(){
+  var h=OF.hat!==null&&OF.hC?((WD[OF.hC]||[])[OF.hat]||{}).e||'':'';
+  var c=OF.cl!==null&&OF.clC?((WD[OF.clC]||[])[OF.cl]||{}).e||'🧒':'🧒';
+  var s=OF.sh!==null&&OF.shC?((WD[OF.shC]||[])[OF.sh]||{}).e||'':'';
+  document.getElementById('cp').innerHTML='<div>'+h+'</div><div>'+c+'</div><div style="font-size:26px">'+s+'</div>';
+  var mc=document.getElementById('mc');if(mc)mc.textContent=c;
+  var crr=document.getElementById('cr');if(crr)crr.textContent=c;
+}
+function clearOF(){OF={hat:null,hC:null,cl:null,clC:null,sh:null,shC:null};rCP();rDP();['lh','lo','ls'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent='none';});}
+
+// ===== FOOD =====
+function iFood(){
+  var cats=Object.keys(FD);
+  document.getElementById('ftabs').innerHTML=cats.map(function(c){return '<div class="tab'+((_fc===c)?' on':'')+'" style="border-color:#ffcc80;color:'+(_fc===c?'#fff':'#e65100')+';background:'+(_fc===c?'#ff9800':'#fff')+'" onclick="sFC(\''+c+'\')">'+c+'</div>';}).join('');
+  rFG();
+}
+function sFC(c){_fc=c;iFood();}
+function rFG(){
+  var items=FD[_fc]||[];
+  document.getElementById('fgrid').innerHTML=items.map(function(it,i){
+    var inC=cart.find(function(x){return x.n===it.n&&x.cat===_fc;});
+    return '<div class="fcard'+(inC?' inc':'')+'" onclick="tCart(\''+_fc+'\','+i+')"><div style="font-size:30px">'+it.e+'</div><div style="font-size:10px;font-weight:800;color:#e65100;margin-top:2px">'+it.n+'</div><div style="font-size:11px;color:#ff9800;font-weight:900">'+(inC?'✅ In cart':'🪙'+it.p)+'</div></div>';
+  }).join('');
+  document.getElementById('fc').textContent=cart.length;
+  document.getElementById('ft').textContent=cart.reduce(function(s,x){return s+x.p;},0);
+}
+function tCart(cat,i){var it=FD[cat][i];var idx=cart.findIndex(function(x){return x.n===it.n&&x.cat===cat;});if(idx>=0)cart.splice(idx,1);else cart.push(Object.assign({},it,{cat:cat}));rFG();}
+function buyFood(){
+  if(!cart.length){spop('🛒','Cart Empty!','Add some food first!');return;}
+  var total=cart.reduce(function(s,x){return s+x.p;},0);
+  if(coins<total){spop('😅','Not enough coins!','Need 🪙'+total+'. Earn coins at English School!');return;}
+  coins-=total;var names=cart.map(function(x){return x.e;}).join(' ');cart=[];uc();rFG();spop('🎉','Yummy!','You bought '+names+' for 🪙'+total+'!');
+}
+
+// ===== HOUSE =====
+function iHouse(){
+  var cats=Object.keys(HD);
+  document.getElementById('htabs').innerHTML=cats.map(function(c){return '<div class="tab'+((_hc===c)?' on':'')+'" style="border-color:#ce93d8;color:'+(_hc===c?'#fff':'#6a1b9a')+';background:'+(_hc===c?'#9c27b0':'#fff')+'" onclick="sHC(\''+c+'\')">'+c+'</div>';}).join('');
+  rHG();rRoom();
+}
+function sHC(c){_hc=c;iHouse();}
+function rHG(){
+  var items=HD[_hc]||[];
+  document.getElementById('hgrid').innerHTML=items.map(function(it,i){
+    var p=placed.find(function(x){return x.n===it.n&&x.cat===_hc;});
+    return '<div class="hitem'+(p?' placed':'')+'" onclick="tFurn(\''+_hc+'\','+i+')"><div style="font-size:26px">'+it.e+'</div><div style="font-size:9px;font-weight:800;color:#6a1b9a;margin-top:2px">'+it.n+'</div><div style="font-size:9px;font-weight:900;color:#00c853">'+(p?'✅':'FREE')+'</div></div>';
+  }).join('');
+}
+function tFurn(cat,i){
+  var it=HD[cat][i];var idx=placed.findIndex(function(x){return x.n===it.n&&x.cat===cat;});
+  if(idx>=0)placed.splice(idx,1);
+  else{placed.push(Object.assign({},it,{cat:cat}));spop('🏡','Placed!',it.e+' '+it.n+' added to your house — FREE! 🏠');}
+  rHG();rRoom();
+}
+function rRoom(){
+  var pos=[{b:'52px',l:'3%'},{b:'52px',l:'14%'},{b:'52px',l:'25%'},{b:'52px',l:'36%'},{b:'52px',l:'47%'},{b:'52px',l:'58%'},{b:'52px',l:'69%'},{b:'52px',l:'80%'},{b:'100px',l:'8%'},{b:'100px',l:'30%'},{b:'100px',l:'52%'},{b:'100px',l:'74%'}];
+  document.getElementById('ri').innerHTML=placed.map(function(it,i){var p=pos[i%pos.length];return '<div style="position:absolute;bottom:'+p.b+';left:'+p.l+';font-size:36px;user-select:none" title="'+it.n+'">'+it.e+'</div>';}).join('');
+}
+
+// ===== JUMP GAME =====
+function iJump(){
+  var cv=document.getElementById('jc');
+  cv.onclick=doJ;
+  document.addEventListener('keydown',jKey);
+  jWL=[].concat(JW).sort(function(){return Math.random()-.5;});
+  jCW=jWL[0];jCL=[];jObs=[];jLets=[];jFr=0;jSp=3.5;jSc=0;jRun=true;
+  jp={x:65,y:0,vy:0,og:true,w:40,h:40};
+  uJW();jLoop();
+}
+function stopJ(){cancelAnimationFrame(jRaf);jRun=false;document.removeEventListener('keydown',jKey);}
+function jKey(e){if(e.code==='Space'){e.preventDefault();doJ();}}
+function doJ(){if(jp&&jp.og&&jRun){jp.vy=-13;jp.og=false;}}
+function uJW(){
+  var t=document.getElementById('jwt');var p=document.getElementById('jwp');if(!t||!p)return;
+  t.textContent=jCW;
+  var pr='';for(var i=0;i<jCW.length;i++)pr+=(i>0?' ':'')+( i<jCL.length?jCL[i]:'_');
+  p.textContent=pr;
+}
+function jLoop(){
+  if(!jRun)return;
+  var cv=document.getElementById('jc');if(!cv){stopJ();return;}
+  var W=cv.offsetWidth,H=cv.offsetHeight;
+  cv.width=W;cv.height=H;
+  var ctx=cv.getContext('2d');
+  var gY=H-52;
+  // sky gradient
+  var sg=ctx.createLinearGradient(0,0,0,gY);sg.addColorStop(0,'#87ceeb');sg.addColorStop(1,'#c8eaff');
+  ctx.fillStyle=sg;ctx.fillRect(0,0,W,gY);
+  ctx.fillStyle='#5cb85c';ctx.fillRect(0,gY,W,H);
+  // clouds decoration
+  ctx.font='22px serif';ctx.fillText('☁️',W*0.1,30);ctx.fillText('☁️',W*0.6,20);ctx.fillText('☁️',W*0.85,35);
+  jFr++;
+  if(jFr%55===0)jSc++;
+  if(jFr%100===0&&jSp<8.5)jSp+=0.25;
+  var wL=jCW.slice(jCL.length);
+  if(wL.length>0&&jFr%80===0)jLets.push({x:W+25,y:gY-jp.h-Math.random()*55,lt:wL[0],hit:false});
+  if(jFr%95===0&&Math.random()<0.45)jObs.push({x:W+18,y:gY-40,w:32,h:32});
+  if(!jp.og)jp.vy+=0.65;
+  jp.y+=jp.vy;
+  if(jp.y>=gY-jp.h){jp.y=gY-jp.h;jp.vy=0;jp.og=true;}
+  jLets.forEach(function(l){l.x-=jSp;});jObs.forEach(function(o){o.x-=jSp;});
+  jLets=jLets.filter(function(l){return l.x>-50;});jObs=jObs.filter(function(o){return o.x>-60;});
+  var pm=7;
+  jLets.forEach(function(l){
+    if(!l.hit&&jp.x+pm<l.x+28&&jp.x+jp.w-pm>l.x&&jp.y+pm<l.y+28&&jp.y+jp.h-pm>l.y){
+      l.hit=true;jCL.push(l.lt);
+      if(jCL.length>=jCW.length){jSc+=10;coins+=5;uc();var wi=jWL.indexOf(jCW)+1;jCW=jWL[wi%jWL.length];jCL=[];}
+      uJW();var el=document.getElementById('js');if(el)el.textContent=jSc;
+    }
+  });
+  jObs.forEach(function(o){
+    if(jp.x+pm<o.x+o.w&&jp.x+jp.w-pm>o.x&&jp.y+pm<o.y+o.h&&jp.y+jp.h-pm>o.y){
+      o.x=-999;jSc=Math.max(0,jSc-2);var el=document.getElementById('js');if(el)el.textContent=jSc;
+    }
+  });
+  var charE=OF.cl!==null&&OF.clC?((WD[OF.clC]||[])[OF.cl]||{}).e||'🧒':'🧒';
+  ctx.font=jp.h+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(charE,jp.x+jp.w/2,jp.y+jp.h/2);
+  jLets.forEach(function(l){
+    if(l.hit)return;
+    ctx.fillStyle='rgba(255,255,255,.95)';ctx.beginPath();ctx.arc(l.x+14,l.y+14,15,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#ffd700';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#1565c0';ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(l.lt,l.x+14,l.y+14);
+  });
+  jObs.forEach(function(o){ctx.font='28px serif';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('🪨',o.x,o.y);});
+  ctx.fillStyle='rgba(255,255,255,.92)';ctx.font='bold 12px sans-serif';ctx.textAlign='right';ctx.textBaseline='top';ctx.fillText('⭐'+jSc,W-8,8);
+  jRaf=requestAnimationFrame(jLoop);
+}
+
+// ===== SHOP GAME =====
+function iSG(){
+  document.getElementById('sgtabs').innerHTML=SGDATA.map(function(d,i){return '<div class="tab'+(i===sgCat?' on':'')+'" style="border-color:#80cbc4;color:'+(i===sgCat?'#fff':'#00695c')+';background:'+(i===sgCat?'#00695c':'#fff')+'" onclick="sSGC('+i+')">'+d.cat+'</div>';}).join('');
+  sgs={cat:sgCat,idx:0,score:0,done:false};rSGQ();
+}
+function sSGC(i){sgCat=i;iSG();}
+function rSGQ(){
+  var cat=SGDATA[sgs.cat];var tot=cat.qs.length;
+  if(sgs.idx>=tot){var s=sgs.score;var p=Math.round(s/tot*100);var g=p>=80?'🏆':p>=60?'🌟':'💪';
+    document.getElementById('sgbox').innerHTML='<div style="background:#00695c;border-radius:16px;padding:20px;text-align:center;color:#fff"><div style="font-size:48px;margin-bottom:6px">'+g+'</div><div style="font-size:18px;font-weight:900">'+s+'/'+tot+' ('+p+'%)</div><div style="font-size:14px;font-weight:900;margin-top:5px;background:rgba(255,255,255,.2);border-radius:8px;padding:5px">Earned 🪙'+(s*5)+' coins!</div><div style="display:flex;gap:6px;margin-top:11px;justify-content:center"><button style="background:#fff;color:#00695c;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:900;cursor:pointer" onclick="iSG()">Play Again!</button><button style="background:rgba(255,255,255,.25);color:#fff;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:900;cursor:pointer" onclick="go(\'map\')">World Map</button></div></div>';return;}
+  var q=cat.qs[sgs.idx];var pct=Math.round(sgs.idx/tot*100);
+  document.getElementById('sgbox').innerHTML='<div style="background:#00695c;border-radius:12px;padding:9px 11px;margin-bottom:9px;color:#fff"><div style="font-size:9px;font-weight:800;opacity:.8">Q'+(sgs.idx+1)+'/'+tot+' — Correct = 🪙5!</div><div style="height:5px;background:rgba(255,255,255,.3);border-radius:3px;margin-top:4px;overflow:hidden"><div style="height:100%;background:#fff;width:'+pct+'%;border-radius:3px;transition:width .4s"></div></div><div style="margin-top:3px;font-size:11px">⭐'+sgs.score+' | 🪙+'+(sgs.score*5)+'</div></div><div style="background:#fff;border:3px solid #80cbc4;border-radius:16px;padding:13px"><div style="font-size:36px;text-align:center;margin-bottom:6px">'+q.e+'</div><div style="font-size:13px;font-weight:800;color:#00695c;text-align:center;margin-bottom:9px">'+q.q+'</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="sgopts">'+q.o.map(function(o,i){return '<div class="qopt" onclick="aSG('+i+')">'+o+'</div>';}).join('')+'</div><div id="sgfb" style="display:none;margin-top:6px;padding:6px;border-radius:8px;font-size:11px;font-weight:700;text-align:center"></div></div>';
+}
+function aSG(i){
+  if(sgs.done)return;sgs.done=true;
+  var q=SGDATA[sgs.cat].qs[sgs.idx];
+  var opts=document.querySelectorAll('#sgopts .qopt');var fb=document.getElementById('sgfb');
+  opts[q.a].classList.add('rev');if(i!==q.a)opts[i].classList.add('no');
+  if(i===q.a){sgs.score++;coins+=5;uc();fb.style.background='#e8f5e9';fb.style.color='#2e7d32';fb.textContent='Correct! +🪙5 — '+q.x;}
+  else{fb.style.background='#fff3e0';fb.style.color='#e65100';fb.textContent='Not quite! '+q.x;}
+  fb.style.display='block';
+  setTimeout(function(){sgs.idx++;sgs.done=false;rSGQ();},1900);
+}
+
+// ===== SCHOOL =====
+function iSch(){
+  document.getElementById('sctabs').innerHTML=SCDATA.map(function(d,i){return '<div class="tab'+(i===sCat?' on':'')+'" style="border-color:#80cbc4;color:'+(i===sCat?'#fff':'#00695c')+';background:'+(i===sCat?'#00897b':'#fff')+'" onclick="sSC('+i+')">'+d.cat+'</div>';}).join('');
+  qs={cat:sCat,idx:0,score:0,done:false};rQ();
+}
+function sSC(i){sCat=i;iSch();}
+function rQ(){
+  var cat=SCDATA[qs.cat];var tot=cat.qs.length;
+  if(qs.idx>=tot){var s=qs.score;var p=Math.round(s/tot*100);var g=p>=80?'🏆':p>=60?'🌟':'💪';
+    document.getElementById('qbox').innerHTML='<div style="background:#00897b;border-radius:16px;padding:20px;text-align:center;color:#fff"><div style="font-size:48px;margin-bottom:6px">'+g+'</div><div style="font-size:18px;font-weight:900">'+s+'/'+tot+' ('+p+'%)</div><div style="font-size:14px;font-weight:900;margin-top:5px;background:rgba(255,255,255,.2);border-radius:8px;padding:5px">Earned 🪙'+(s*5)+' coins!</div><div style="display:flex;gap:6px;margin-top:11px;justify-content:center"><button style="background:#fff;color:#00695c;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:900;cursor:pointer" onclick="iSch()">Play Again!</button><button style="background:rgba(255,255,255,.25);color:#fff;border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:900;cursor:pointer" onclick="go(\'map\')">World Map</button></div></div>';return;}
+  var q=cat.qs[qs.idx];var pct=Math.round(qs.idx/tot*100);
+  document.getElementById('qbox').innerHTML='<div style="background:#00897b;border-radius:12px;padding:9px 11px;margin-bottom:9px;color:#fff"><div style="font-size:9px;font-weight:800;opacity:.8">Q'+(qs.idx+1)+'/'+tot+' — Correct = 🪙5!</div><div style="height:5px;background:rgba(255,255,255,.3);border-radius:3px;margin-top:4px;overflow:hidden"><div style="height:100%;background:#fff;width:'+pct+'%;border-radius:3px;transition:width .4s"></div></div><div style="margin-top:3px;font-size:11px">⭐'+qs.score+' | 🪙+'+(qs.score*5)+'</div></div><div style="background:#fff;border:3px solid #80cbc4;border-radius:16px;padding:13px"><div style="font-size:36px;text-align:center;margin-bottom:6px">'+q.e+'</div><div style="font-size:13px;font-weight:800;color:#00695c;text-align:center;margin-bottom:9px">'+q.q+'</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="qopts">'+q.o.map(function(o,i){return '<div class="qopt" onclick="aQ('+i+')">'+o+'</div>';}).join('')+'</div><div id="qfb" style="display:none;margin-top:6px;padding:6px;border-radius:8px;font-size:11px;font-weight:700;text-align:center"></div></div>';
+}
+function aQ(i){
+  if(qs.done)return;qs.done=true;
+  var q=SCDATA[qs.cat].qs[qs.idx];
+  var opts=document.querySelectorAll('#qopts .qopt');var fb=document.getElementById('qfb');
+  opts[q.a].classList.add('rev');if(i!==q.a)opts[i].classList.add('no');
+  if(i===q.a){qs.score++;coins+=5;uc();fb.style.background='#e8f5e9';fb.style.color='#2e7d32';fb.textContent='Correct! +🪙5 — '+q.x;}
+  else{fb.style.background='#fff3e0';fb.style.color='#e65100';fb.textContent='Not quite! '+q.x;}
+  fb.style.display='block';
+  setTimeout(function(){qs.idx++;qs.done=false;rQ();},1900);
+}
+
+// ===== STORY WORLD =====
+function iStory(){showStoryTab('read');}
+function showStoryTab(tab){
+  storyTab=tab;
+  var tabs=['read','write','today'];
+  var ids=['storyRead','storyWrite','storyToday'];
+  var btns=['stab1','stab2','stab3'];
+  var tabKeys=['read','write','today'];
+  ids.forEach(function(id,i){
+    var el=document.getElementById(id);
+    if(el){el.style.display=(tabKeys[i]===tab?'':'none');if(tabKeys[i]===tab)el.style.flex='1';}
+  });
+  btns.forEach(function(id,i){
+    var el=document.getElementById(id);
+    if(el){el.classList.toggle('on',tabKeys[i]===tab);}
+  });
+  if(tab==='read')renderReadStories();
+  else if(tab==='today')renderTodayStory();
+}
+function renderReadStories(){
+  var allStories=defaultStories.concat(stories);
+  var el=document.getElementById('storyRead');
+  if(!allStories.length){el.innerHTML='<div style="text-align:center;padding:40px;color:#bbb;font-size:14px;font-weight:700">No stories yet!<br>Ask Dad to write one for you 📖</div>';return;}
+  el.innerHTML=allStories.map(function(s,i){
+    return '<div class="story-card">'+(s.isNew?'<div class="story-new">NEW!</div>':'')+(s.fromDad?'<div style="font-size:10px;font-weight:900;color:#e91e8c;margin-bottom:3px">📝 From Dad with love ❤️</div>':'')+'<div class="story-title">'+s.emoji+' '+s.title+'</div><div class="story-text">'+s.text.replace(/\n/g,'<br>')+'</div><div class="story-date">'+s.date+'</div></div>';
+  }).reverse().join('');
+}
+function renderTodayStory(){
+  var allStories=defaultStories.concat(stories);
+  var el=document.getElementById('storyToday');
+  var newest=allStories[allStories.length-1]||defaultStories[0];
+  if(!newest){el.innerHTML='<div style="text-align:center;padding:40px;color:#bbb">No story yet today!</div>';return;}
+  el.innerHTML='<div style="text-align:center;margin-bottom:12px"><div style="font-size:48px">'+newest.emoji+'</div><div style="font-size:13px;font-weight:800;color:#ff5722">Today\'s Story</div></div><div class="story-card" style="border-color:#ff5722">'+(newest.fromDad?'<div style="font-size:10px;font-weight:900;color:#e91e8c;margin-bottom:4px">📝 From Dad with love ❤️</div>':'')+'<div class="story-title">'+newest.emoji+' '+newest.title+'</div><div class="story-text">'+newest.text.replace(/\n/g,'<br>')+'</div><div class="story-date">'+newest.date+'</div></div>';
+}
+function pickEmoji(em){
+  pickedEm=em;
+  var el=document.getElementById('pickedEmoji');if(el)el.textContent='Selected: '+em;
+  document.querySelectorAll('.story-emoji-pick').forEach(function(x){x.style.background=(x.textContent.trim()===em)?'#fce4ec':'#fff';x.style.borderColor=(x.textContent.trim()===em)?'#e91e8c':'#ffccbc';});
+}
+function publishStory(){
+  var title=document.getElementById('storyTitleIn').value.trim();
+  var text=document.getElementById('storyTextIn').value.trim();
+  if(!title){spop('✏️','Oops!','Please write a title for your story!');return;}
+  if(text.length<20){spop('📖','Too short!','Please write a longer story!');return;}
+  var now=new Date();var dateStr=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  stories.push({title:title,emoji:pickedEm,text:text,date:dateStr,isNew:true,fromDad:true});
+  document.getElementById('storyTitleIn').value='';
+  document.getElementById('storyTextIn').value='';
+  coins+=20;uc();
+  spop('📖','Story Published!','Your story is live! 🎉 You earned 🪙20 coins for writing!');
+  setTimeout(function(){showStoryTab('read');},100);
+}
+
+// ===== DAILY GIFT =====
+function iGift(){
+  var gw=document.getElementById('gw');
+  if(giftDone){
+    gw.innerHTML='<div style="font-size:65px;opacity:.4;text-align:center">🎁</div><div style="font-size:16px;font-weight:900;color:#f57f17;text-align:center">Come back tomorrow!</div><div style="font-size:12px;color:#ff8f00;text-align:center;line-height:1.6;margin-top:6px">Your gift has been claimed!<br>Earn more coins by answering<br>English quiz questions! 🌟</div>';
+    document.getElementById('gdot').style.display='none';
+  } else {
+    gw.innerHTML='<div style="font-size:17px;font-weight:900;color:#f57f17;text-align:center">Your daily gift is waiting!</div><div style="font-size:13px;color:#ff8f00;text-align:center">Tap the gift box — it\'s FREE!</div><div style="font-size:95px;cursor:pointer;text-align:center;transition:transform .2s" onmouseover="this.style.transform=\'scale(1.1) rotate(4deg)\'" onmouseout="this.style.transform=\'\'" onclick="openG()">🎁</div><div style="font-size:12px;color:#f57f17;text-align:center">Every day brings a new surprise! 🌈</div>';
+  }
+}
+function openG(){
+  var gs=[{e:'🪙',m:'50 Coins!',c:50},{e:'💎',m:'100 Coins!',c:100},{e:'🌟',m:'75 Coins!',c:75},{e:'🎀',m:'80 Coins!',c:80},{e:'🧁',m:'60 Coins!',c:60},{e:'🏆',m:'120 Coins!',c:120},{e:'🌈',m:'90 Coins!',c:90}];
+  var g=gs[Math.floor(Math.random()*gs.length)];
+  giftDone=true;coins+=g.c;uc();document.getElementById('gdot').style.display='none';
+  document.getElementById('gw').innerHTML='<div style="font-size:17px;font-weight:900;color:#f57f17;text-align:center">You opened your gift!</div><div style="font-size:90px;text-align:center">'+g.e+'</div><div style="font-size:22px;font-weight:900;color:#b8860b;text-align:center">You got '+g.m+'</div><div style="font-size:13px;color:#f57f17;text-align:center">You now have 🪙'+coins+' coins!</div><div style="background:#fff;border-radius:12px;padding:10px;text-align:center;margin-top:8px;width:100%;max-width:260px"><div style="font-size:11px;font-weight:900;color:#880e4f">Spend coins at:</div><div style="font-size:12px;color:#ff9800;margin-top:2px;font-weight:800">🍔 Food Market</div><div style="font-size:10px;color:#bbb;margin-top:2px">Everything else is FREE! 🎉</div></div>';
+}
+
+// ===== ROBLOX WORLD =====
+var rbTab='avatar';
+var rbAvatar={skin:'🟫',hair:'👱',top:'👕',bottom:'👖',shoes:'👟',acc:null};
+var rbCoins=500; // uses same coins
+var tycoonBuildings=[];
+var pets=[];
+var catalogCart=[];
+var obbyLevel=1,obbyScore=0,obbyRunning=false,obbyRaf=null;
+var obbyPlayer={x:60,y:0,vy:0,og:true};
+var obbyPlatforms=[],obbyCoins2=[],obbyFr=0,obbySpd=2.8;
+
+var rbSkins=[{e:'🟫',n:'Brown'},{e:'🟡',n:'Yellow'},{e:'🟧',n:'Orange'},{e:'⬜',n:'White'},{e:'🟨',n:'Light'},{e:'🟤',n:'Dark'}];
+var rbHairs=[{e:'👱',n:'Blonde'},{e:'👩',n:'Brown'},{e:'👩‍🦱',n:'Curly'},{e:'👩‍🦰',n:'Red'},{e:'👩‍🦳',n:'Silver'},{e:'👩‍🦲',n:'Bald'}];
+var rbTops=[{e:'👕',n:'T-Shirt'},{e:'👔',n:'Dress Shirt'},{e:'🥼',n:'Lab Coat'},{e:'🧥',n:'Jacket'},{e:'👗',n:'Dress'},{e:'🩱',n:'Tank'},{e:'🎽',n:'Sport'},{e:'🩲',n:'Crop'}];
+var rbBottoms=[{e:'👖',n:'Jeans'},{e:'🩳',n:'Shorts'},{e:'👗',n:'Skirt'},{e:'🥻',n:'Long Skirt'},{e:'🩱',n:'Leggings'},{e:'🧣',n:'Pants'}];
+var rbShoes=[{e:'👟',n:'Sneakers'},{e:'👠',n:'Heels'},{e:'🥾',n:'Boots'},{e:'👞',n:'Flats'},{e:'🩴',n:'Sandals'},{e:'🛹',n:'Skates'}];
+var rbAccs=[{e:'🎩',n:'Top Hat'},{e:'👑',n:'Crown'},{e:'🧢',n:'Cap'},{e:'🕶️',n:'Shades'},{e:'🎀',n:'Bow'},{e:'💎',n:'Diamond'},{e:'🦋',n:'Wings'},{e:'⭐',n:'Star Halo'}];
+
+var tycoonItems=[
+  {e:'🏠',n:'Starter House',p:0,placed:false,desc:'Your first building!'},
+  {e:'💰',n:'Money Printer',p:50,placed:false,desc:'Earns coins over time'},
+  {e:'🏪',n:'Shop',p:80,placed:false,desc:'Attracts customers'},
+  {e:'🎡',n:'Ferris Wheel',p:120,placed:false,desc:'Fun attraction!'},
+  {e:'🏊',n:'Pool',p:100,placed:false,desc:'Cool down spot'},
+  {e:'🎮',n:'Arcade',p:150,placed:false,desc:'Players love it!'},
+  {e:'🌳',n:'Park',p:60,placed:false,desc:'Beautiful scenery'},
+  {e:'🚀',n:'Launch Pad',p:200,placed:false,desc:'Go to the moon!'},
+  {e:'🏟️',n:'Stadium',p:180,placed:false,desc:'Host big events'},
+  {e:'🎪',n:'Circus',p:140,placed:false,desc:'Wow the crowd!'},
+  {e:'🌈',n:'Rainbow Gate',p:90,placed:false,desc:'Magical entrance'},
+  {e:'⛩️',n:'Secret Temple',p:250,placed:false,desc:'Hidden treasure!'},
+];
+var petsData=[
+  {e:'🐶',n:'Dog',r:'Common',p:30,owned:false},{e:'🐱',n:'Cat',r:'Common',p:30,owned:false},
+  {e:'🐰',n:'Bunny',r:'Uncommon',p:60,owned:false},{e:'🦊',n:'Fox',r:'Uncommon',p:60,owned:false},
+  {e:'🐼',n:'Panda',r:'Rare',p:100,owned:false},{e:'🦄',n:'Unicorn',r:'Legendary',p:200,owned:false},
+  {e:'🐉',n:'Dragon',r:'Legendary',p:250,owned:false},{e:'🦋',n:'Butterfly',r:'Rare',p:120,owned:false},
+  {e:'🐬',n:'Dolphin',r:'Epic',p:160,owned:false},{e:'🦁',n:'Lion',r:'Epic',p:150,owned:false},
+  {e:'🐸',n:'Frog',r:'Common',p:25,owned:false},{e:'🦜',n:'Parrot',r:'Uncommon',p:70,owned:false},
+];
+var catalogItems=[
+  {e:'🎩',n:'Domino Crown',p:99,cat:'Hats',owned:false},{e:'🌟',n:'Star Wings',p:149,cat:'Accessories',owned:false},
+  {e:'🦄',n:'Unicorn Headband',p:49,cat:'Hats',owned:false},{e:'💎',n:'Diamond Necklace',p:79,cat:'Accessories',owned:false},
+  {e:'🔥',n:'Flame Aura',p:199,cat:'Effects',owned:false},{e:'❄️',n:'Ice Crown',p:129,cat:'Hats',owned:false},
+  {e:'🌈',n:'Rainbow Trail',p:89,cat:'Effects',owned:false},{e:'⚡',n:'Thunder Bolt',p:109,cat:'Accessories',owned:false},
+  {e:'🎭',n:'Drama Mask',p:59,cat:'Face',owned:false},{e:'🏆',n:'Champion Belt',p:169,cat:'Accessories',owned:false},
+  {e:'🌺',n:'Flower Crown',p:39,cat:'Hats',owned:false},{e:'🤖',n:'Robot Face',p:139,cat:'Face',owned:false},
+];
+
+function showRbTab(tab){
+  rbTab=tab;
+  var allTabs=['avatar','obby','tycoon','adopt','catalog'];
+  allTabs.forEach(function(t,i){
+    var el=document.getElementById('rbtab'+(i+1));
+    if(el){
+      el.classList.toggle('on',t===tab);
+      el.style.background=t===tab?'#fff':'#1a1a2e';
+      el.style.color=t===tab?'#dc2626':'#dc2626';
+    }
+  });
+  stopObby();
+  if(tab==='avatar')renderAvatar();
+  else if(tab==='obby')renderObby();
+  else if(tab==='tycoon')renderTycoon();
+  else if(tab==='adopt')renderAdopt();
+  else if(tab==='catalog')renderCatalog();
+}
+
+function renderAvatar(){
+  var c=document.getElementById('rbContent');
+  var body=rbAvatar.skin||'🟫';
+  var hair=rbAvatar.hair||'👱';
+  var top=rbAvatar.top||'👕';
+  var bot=rbAvatar.bottom||'👖';
+  var shoe=rbAvatar.shoes||'👟';
+  var acc=rbAvatar.acc||'';
+  c.innerHTML='<div style="background:linear-gradient(180deg,#1a1a2e,#16213e);padding:14px 12px;overflow-y:auto;flex:1">'
+    +'<div style="text-align:center;margin-bottom:10px">'
+    +'<div style="font-size:11px;font-weight:900;color:#dc2626;letter-spacing:1px;margin-bottom:6px">YOUR ROBLOX AVATAR</div>'
+    +'<div style="display:inline-block;background:#0f3460;border-radius:20px;padding:14px 20px;border:3px solid #dc2626">'
+    +'<div style="font-size:28px;line-height:1">'+acc+'</div>'
+    +'<div style="font-size:18px;line-height:1">'+hair+'</div>'
+    +'<div style="font-size:48px;line-height:1">'+body+'</div>'
+    +'<div style="font-size:22px;line-height:1">'+top+'</div>'
+    +'<div style="font-size:18px;line-height:1">'+bot+'</div>'
+    +'<div style="font-size:18px;line-height:1">'+shoe+'</div>'
+    +'</div></div>'
+    +rbAvatarSection('Skin Color',rbSkins,'skin')
+    +rbAvatarSection('Hair Style',rbHairs,'hair')
+    +rbAvatarSection('Top',rbTops,'top')
+    +rbAvatarSection('Bottom',rbBottoms,'bottom')
+    +rbAvatarSection('Shoes',rbShoes,'shoes')
+    +rbAvatarSection('Accessories',rbAccs,'acc')
+    +'<button onclick="spop(\'💅\',\'Avatar Saved!\',\'Your Roblox look is awesome! 🎮\')" style="width:100%;margin-top:10px;background:#dc2626;color:#fff;border:none;border-radius:11px;padding:10px;font-size:13px;font-weight:900;cursor:pointer">Save Avatar!</button>'
+    +'</div>';
+}
+function rbAvatarSection(label,items,key){
+  return '<div style="margin-bottom:10px"><div style="font-size:10px;font-weight:900;color:#dc2626;margin-bottom:5px;text-transform:uppercase">'+label+'</div><div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px">'+items.map(function(it,i){
+    var sel=(rbAvatar[key]===it.e);
+    return '<div onclick="setAv(\''+key+'\',\''+it.e+'\')" style="flex-shrink:0;background:'+(sel?'#dc2626':'#0f3460')+';border:2px solid '+(sel?'#fff':'#dc2626')+';border-radius:10px;padding:7px 9px;cursor:pointer;text-align:center;min-width:52px;transition:all .15s"><div style="font-size:22px">'+it.e+'</div><div style="font-size:9px;font-weight:700;color:#fff;margin-top:2px">'+it.n+'</div></div>';
+  }).join('')+'</div></div>';
+}
+function setAv(key,val){rbAvatar[key]=val;renderAvatar();}
+
+function renderObby(){
+  stopObby();
+  obbyCoinCount=0;
+  var c=document.getElementById('rbContent');
+  c.innerHTML='<div style="background:#1a1a2e;padding:10px 12px;flex-shrink:0">'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;color:#fff">'
+    +'<div style="font-size:12px;font-weight:800">🏃 OBBY CHALLENGE</div>'
+    +'<div style="font-size:12px;font-weight:800;color:#ffd700">⭐<span id="obbyScr">0</span> | 🪙<span id="obbyCoinDisp">0</span> earned</div>'
+    +'</div>'
+    +'<div style="font-size:9px;color:#aaa;margin-top:2px">Jump on platforms! Collect coins! TAP canvas or SPACE to jump.</div>'
+    +'</div>'
+    +'<canvas id="obbyCanvas" style="width:100%;display:block;cursor:pointer;background:#1a1a2e;min-height:300px;flex:1"></canvas>'
+    +'<div style="background:#0f3460;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">'
+    +'<div style="font-size:11px;color:#fff;font-weight:700">Jump & collect coins!</div>'
+    +'<button onclick="startObby()" style="background:#dc2626;color:#fff;border:none;border-radius:10px;padding:6px 14px;font-size:12px;font-weight:900;cursor:pointer">▶ Start!</button>'
+    +'</div>';
+  setTimeout(function(){initObby();},100);
+}
+function initObby(){
+  var cv=document.getElementById('obbyCanvas');if(!cv)return;
+  cv.onclick=doObbyJump;
+  document.addEventListener('keydown',obbyKey);
+  obbyFr=0;obbyScore=0;obbySpd=2.8;obbyRunning=true;
+  obbyPlayer={x:60,y:0,vy:0,og:true};
+  obbyPlatforms=[];obbyCoins2=[];
+  // Generate initial platforms
+  for(var i=0;i<8;i++) obbyPlatforms.push({x:80+i*110,y:Math.random()*120+100,w:70+Math.random()*40,h:14,col:['#dc2626','#ff9800','#00c853','#7c4dff','#00bcd4'][i%5]});
+  obbyLoop();
+}
+function stopObby(){cancelAnimationFrame(obbyRaf);obbyRunning=false;document.removeEventListener('keydown',obbyKey);}
+function obbyKey(e){if(e.code==='Space'){e.preventDefault();doObbyJump();}}
+function doObbyJump(){if(obbyPlayer.og&&obbyRunning){obbyPlayer.vy=-12;obbyPlayer.og=false;}}
+function startObby(){stopObby();initObby();}
+var obbyCoinCount=0;
+function obbyLoop(){
+  if(!obbyRunning)return;
+  var cv=document.getElementById('obbyCanvas');if(!cv){stopObby();return;}
+  var W=cv.offsetWidth,H=cv.offsetHeight;cv.width=W;cv.height=H;
+  var ctx=cv.getContext('2d');
+  // BG
+  var bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#1a1a2e');bg.addColorStop(1,'#0f3460');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  // Stars
+  ctx.fillStyle='rgba(255,255,255,0.5)';
+  for(var s=0;s<20;s++){ctx.beginPath();ctx.arc((s*73+obbyFr*0.2)%W,(s*37)%H*0.6,1,0,Math.PI*2);ctx.fill();}
+  obbyFr++;
+  if(obbyFr%40===0)obbyScore++;
+  if(obbyFr%200===0&&obbySpd<6)obbySpd+=0.3;
+  // Move platforms
+  obbyPlatforms.forEach(function(p){p.x-=obbySpd;});
+  obbyPlatforms=obbyPlatforms.filter(function(p){return p.x>-120;});
+  if(obbyPlatforms.length<8){
+    var last=obbyPlatforms[obbyPlatforms.length-1]||{x:200};
+    obbyPlatforms.push({x:last.x+100+Math.random()*60,y:60+Math.random()*160,w:60+Math.random()*50,h:14,col:['#dc2626','#ff9800','#00c853','#7c4dff','#00bcd4','#e91e8c'][Math.floor(Math.random()*6)]});
+  }
+  // Coins
+  obbyCoins2.forEach(function(c){c.x-=obbySpd;});
+  obbyCoins2=obbyCoins2.filter(function(c){return c.x>-30&&!c.collected;});
+  if(obbyFr%60===0) obbyCoins2.push({x:W+20,y:obbyPlatforms[obbyPlatforms.length-1].y-30,collected:false});
+  // Physics
+  if(!obbyPlayer.og)obbyPlayer.vy+=0.55;
+  obbyPlayer.y+=obbyPlayer.vy;
+  obbyPlayer.og=false;
+  // Platform collision
+  obbyPlatforms.forEach(function(p){
+    if(obbyPlayer.x+26>p.x&&obbyPlayer.x+8<p.x+p.w&&obbyPlayer.y+32>p.y&&obbyPlayer.y+32<p.y+p.h+10&&obbyPlayer.vy>=0){
+      obbyPlayer.y=p.y-32;obbyPlayer.vy=0;obbyPlayer.og=true;
+    }
+  });
+  // Ground
+  if(obbyPlayer.y>=H-35){
+    obbyScore=Math.max(0,obbyScore-5);
+    obbyPlayer.y=H-280;obbyPlayer.vy=-8;
+    var sel=document.getElementById('obbyScr');if(sel)sel.textContent=obbyScore;
+  }
+  // Coin collect
+  obbyCoins2.forEach(function(cn){
+    if(!cn.collected&&Math.abs(obbyPlayer.x+17-cn.x)<20&&Math.abs(obbyPlayer.y+16-cn.y)<20){
+      cn.collected=true;obbyScore+=5;coins+=2;obbyCoinCount+=2;uc();
+      var sel=document.getElementById('obbyScr');if(sel)sel.textContent=obbyScore;
+      var cd=document.getElementById('obbyCoinDisp');if(cd)cd.textContent=obbyCoinCount;
+    }
+  });
+  // Draw platforms
+  obbyPlatforms.forEach(function(p){
+    ctx.fillStyle=p.col;ctx.beginPath();ctx.roundRect(p.x,p.y,p.w,p.h,6);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.fillRect(p.x+4,p.y+2,p.w-8,3);
+  });
+  // Draw coins
+  obbyCoins2.forEach(function(cn){
+    if(cn.collected)return;
+    ctx.fillStyle='#ffd700';ctx.font='18px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🪙',cn.x,cn.y);
+  });
+  // Draw player (avatar)
+  var charE=rbAvatar.top||'🧒';
+  ctx.font='28px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(charE,obbyPlayer.x+17,obbyPlayer.y+16);
+  // Score
+  ctx.fillStyle='rgba(255,255,255,0.9)';ctx.font='bold 12px sans-serif';ctx.textAlign='left';ctx.textBaseline='top';
+  ctx.fillText('⭐'+obbyScore,8,8);
+  obbyRaf=requestAnimationFrame(obbyLoop);
+}
+
+function renderTycoon(){
+  var total=tycoonItems.filter(function(x){return x.placed;}).length;
+  var c=document.getElementById('rbContent');
+  c.innerHTML='<div style="background:#1a1a2e;padding:10px 12px;color:#fff;font-size:12px;font-weight:800">🏗️ TYCOON — '+total+'/'+tycoonItems.length+' buildings placed | 🪙'+coins+' coins</div>'
+  +'<div style="background:#0f3460;padding:8px 10px;display:flex;gap:6px;overflow-x:auto;min-height:90px;flex-shrink:0">'
+  +tycoonItems.filter(function(x){return x.placed;}).map(function(it){return '<div style="font-size:32px;text-align:center;flex-shrink:0" title="'+it.n+'">'+it.e+'</div>';}).join('')
+  +(total===0?'<div style="color:#666;font-size:12px;align-self:center;padding:0 10px">Your tycoon is empty — add some buildings below!</div>':'')
+  +'</div>'
+  +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;overflow-y:auto">'
+  +tycoonItems.map(function(it,i){
+    return '<div style="background:'+(it.placed?'#14532d':'#16213e')+';border:2px solid '+(it.placed?'#4caf50':'#dc2626')+';border-radius:12px;padding:10px 8px;text-align:center;cursor:pointer;transition:all .15s" onclick="buyTycoon('+i+')">'
+      +'<div style="font-size:30px">'+it.e+'</div>'
+      +'<div style="font-size:11px;font-weight:800;color:#fff;margin-top:4px">'+it.n+'</div>'
+      +'<div style="font-size:10px;color:#aaa;margin-top:2px">'+it.desc+'</div>'
+      +'<div style="font-size:11px;font-weight:900;margin-top:4px;color:'+(it.placed?'#4caf50':'#ffd700')+'">'+( it.placed?'✅ Built':( it.p===0?'FREE':'🪙'+it.p))+'</div>'
+      +'</div>';
+  }).join('')+'</div>';
+}
+function buyTycoon(i){
+  var it=tycoonItems[i];
+  if(it.placed){spop('🏗️','Already Built!',it.e+' '+it.n+' is already in your tycoon!');return;}
+  if(coins<it.p){spop('😅','Not enough coins!','You need 🪙'+it.p+' to build '+it.n+'! Earn coins at the English School!');return;}
+  coins-=it.p;it.placed=true;uc();
+  spop('🏗️','Built!',it.e+' '+it.n+' added to your tycoon! Amazing!');
+  renderTycoon();
+}
+
+var petRarity={'Common':'#4caf50','Uncommon':'#2196f3','Rare':'#9c27b0','Epic':'#ff9800','Legendary':'#ffd700'};
+function renderAdopt(){
+  var owned=petsData.filter(function(p){return p.owned;});
+  var c=document.getElementById('rbContent');
+  c.innerHTML='<div style="background:#1a1a2e;padding:10px 12px;color:#fff">'
+    +'<div style="font-size:12px;font-weight:800;margin-bottom:6px">🐾 ADOPT ME! — Your Pets ('+owned.length+')</div>'
+    +(owned.length>0?'<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px">'+owned.map(function(p){return '<div style="flex-shrink:0;text-align:center;background:#0f3460;border-radius:10px;padding:6px 8px;border:2px solid '+petRarity[p.r]+'"><div style="font-size:28px">'+p.e+'</div><div style="font-size:9px;font-weight:800;color:'+petRarity[p.r]+'">'+p.r+'</div></div>';}).join('')+'</div>':'<div style="font-size:11px;color:#666">No pets yet! Adopt your first pet below ↓</div>')
+    +'</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;padding:10px;overflow-y:auto">'
+    +petsData.map(function(p,i){
+      return '<div style="background:'+(p.owned?'#14532d':'#16213e')+';border:2px solid '+(petRarity[p.r])+';border-radius:12px;padding:9px 6px;text-align:center;cursor:pointer" onclick="adoptPet('+i+')">'
+        +'<div style="font-size:28px">'+p.e+'</div>'
+        +'<div style="font-size:10px;font-weight:800;color:#fff;margin-top:3px">'+p.n+'</div>'
+        +'<div style="font-size:9px;font-weight:900;color:'+petRarity[p.r]+';margin-top:1px">'+p.r+'</div>'
+        +'<div style="font-size:10px;font-weight:900;margin-top:3px;color:'+(p.owned?'#4caf50':'#ffd700')+'">'+(p.owned?'✅ Owned':'🪙'+p.p)+'</div>'
+        +'</div>';
+    }).join('')+'</div>';
+}
+function adoptPet(i){
+  var p=petsData[i];
+  if(p.owned){spop('🐾','Already Adopted!','You already own this '+p.e+' '+p.n+'!');return;}
+  if(coins<p.p){spop('😅','Not enough coins!','You need 🪙'+p.p+' to adopt '+p.n+'! Earn coins at the English School!');return;}
+  coins-=p.p;p.owned=true;uc();
+  spop('🐾','Pet Adopted!','You adopted a '+p.r+' '+p.e+' '+p.n+'! So cute! 🥰');
+  renderAdopt();
+}
+
+var catFilter='All';
+function renderCatalog(){
+  var cats=['All','Hats','Accessories','Effects','Face'];
+  var filtered=catFilter==='All'?catalogItems:catalogItems.filter(function(x){return x.cat===catFilter;});
+  var c=document.getElementById('rbContent');
+  c.innerHTML='<div style="background:#1a1a2e;padding:8px 10px">'
+    +'<div style="font-size:11px;font-weight:800;color:#dc2626;margin-bottom:6px">🛍️ ROBLOX CATALOG</div>'
+    +'<div style="display:flex;gap:5px;overflow-x:auto">'+cats.map(function(cat){return '<div onclick="setCatFilter(\''+cat+'\')" style="flex-shrink:0;background:'+(catFilter===cat?'#dc2626':'#0f3460')+';color:#fff;border:2px solid #dc2626;border-radius:14px;padding:4px 11px;font-size:11px;font-weight:800;cursor:pointer">'+cat+'</div>';}).join('')+'</div>'
+    +'</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;padding:10px;overflow-y:auto">'
+    +filtered.map(function(it,i){
+      var idx=catalogItems.indexOf(it);
+      return '<div style="background:'+(it.owned?'#14532d':'#16213e')+';border:2px solid '+(it.owned?'#4caf50':'#dc2626')+';border-radius:12px;padding:9px 6px;text-align:center;cursor:pointer" onclick="buyCatalog('+idx+')">'
+        +'<div style="font-size:28px">'+it.e+'</div>'
+        +'<div style="font-size:10px;font-weight:800;color:#fff;margin-top:3px">'+it.n+'</div>'
+        +'<div style="font-size:9px;color:#aaa">'+it.cat+'</div>'
+        +'<div style="font-size:10px;font-weight:900;margin-top:3px;color:'+(it.owned?'#4caf50':'#ffd700')+'">'+(it.owned?'✅ Owned':'🪙'+it.p)+'</div>'
+        +'</div>';
+    }).join('')+'</div>';
+}
+function setCatFilter(f){catFilter=f;renderCatalog();}
+function buyCatalog(i){
+  var it=catalogItems[i];
+  if(it.owned){spop('🛍️','Already Owned!','You already have '+it.e+' '+it.n+'!');return;}
+  if(coins<it.p){spop('😅','Not enough coins!','You need 🪙'+it.p+' for '+it.n+'! Earn coins at the English School!');return;}
+  coins-=it.p;it.owned=true;uc();
+  spop('🛍️','Item Purchased!',it.e+' '+it.n+' is now yours! Looking amazing! ✨');
+  renderCatalog();
+}
+
+// ===== BUNNY LAND =====
+var bunTab='hop';
+var carrots=0;
+var bunOutfit={color:'🐰',hat:null,acc:null,bg:'🌸'};
+var bunHopRun=false,bunHopRaf=null;
+var bhPlayer,bhObst,bhCarrots,bhFr,bhSpd,bhScore;
+var feedBowl=[],feedDragging=null;
+var matchCards=[],matchFlipped=[],matchSolved=0,matchLocked=false;
+var gardenPlots=[];
+
+var bunColors=[{e:'🐰',n:'White'},{e:'🐇',n:'Grey'},{e:'🐹',n:'Brown'},{e:'🐱',n:'Orange'},{e:'🐻',n:'Dark'},{e:'🐼',n:'Panda'}];
+var bunHats=[{e:'🎀',n:'Bow'},{e:'👑',n:'Crown'},{e:'🌸',n:'Flower'},{e:'🎩',n:'Top Hat'},{e:'🌈',n:'Rainbow'},{e:'⭐',n:'Star'},{e:'🍓',n:'Strawberry'},{e:'🌻',n:'Sunflower'}];
+var bunAccs=[{e:'💎',n:'Necklace'},{e:'🎒',n:'Backpack'},{e:'🕶️',n:'Shades'},{e:'🧣',n:'Scarf'},{e:'🎸',n:'Guitar'},{e:'💐',n:'Bouquet'},{e:'🎀',n:'Ribbon'},{e:'🌂',n:'Umbrella'}];
+var bunBgs=[{e:'🌸',n:'Spring'},{e:'🌈',n:'Rainbow'},{e:'🌙',n:'Night'},{e:'🌊',n:'Ocean'},{e:'🏡',n:'Home'},{e:'🎠',n:'Carnival'},{e:'🌺',n:'Flower Field'},{e:'❄️',n:'Winter'}];
+var feedFoods=[{e:'🥕',n:'Carrot',fav:true},{e:'🥬',n:'Lettuce',fav:true},{e:'🍎',n:'Apple',fav:false},{e:'🫐',n:'Blueberry',fav:true},{e:'🍌',n:'Banana',fav:false},{e:'🌻',n:'Sunflower Seed',fav:true},{e:'🥦',n:'Broccoli',fav:false},{e:'🍓',n:'Strawberry',fav:true}];
+var gardenSeeds=[{e:'🌷',n:'Tulip',time:3,ready:false,planted:false,timer:0},{e:'🌻',n:'Sunflower',time:5,ready:false,planted:false,timer:0},{e:'🌹',n:'Rose',time:4,ready:false,planted:false,timer:0},{e:'🍀',n:'Clover',time:2,ready:false,planted:false,timer:0},{e:'🌸',n:'Sakura',time:6,ready:false,planted:false,timer:0},{e:'🌼',n:'Daisy',time:2,ready:false,planted:false,timer:0}];
+
+function updateCarrots(){
+  var el=document.getElementById('rbCarrots');if(el)el.textContent=carrots;
+}
+
+function showBunTab(tab){
+  bunTab=tab;
+  stopBunHop();
+  var all=['hop','dress','feed','match','garden'];
+  all.forEach(function(t){
+    var el=document.getElementById('rbtab_'+t);
+    if(el){el.classList.toggle('on',t===tab);el.style.background=t===tab?'#ff69b4':'#fff';el.style.color=t===tab?'#fff':'#ff1493';}
+  });
+  if(tab==='hop')renderBunHop();
+  else if(tab==='dress')renderBunDress();
+  else if(tab==='feed')renderBunFeed();
+  else if(tab==='match')renderBunMatch();
+  else if(tab==='garden')renderBunGarden();
+}
+
+// --- HOP GAME ---
+function renderBunHop(){
+  stopBunHop();
+  var c=document.getElementById('bunContent');
+  c.innerHTML='<div style="background:#ffe4f0;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">'
+    +'<div style="font-size:12px;font-weight:800;color:#880e4f">🏃 BUNNY HOP! — Avoid wolves, collect carrots!</div>'
+    +'<div style="font-size:13px;font-weight:900;color:#e91e8c">🥕<span id="bhScr">0</span></div>'
+    +'</div>'
+    +'<canvas id="bhCanvas" style="width:100%;display:block;cursor:pointer;min-height:280px"></canvas>'
+    +'<div style="background:#ffe4f0;padding:7px 12px;display:flex;justify-content:space-between;align-items:center">'
+    +'<div style="font-size:11px;color:#880e4f;font-weight:700">Tap or SPACE to jump! Collect 🥕 = earn carrots!</div>'
+    +'<button onclick="startBunHop()" style="background:#ff1493;color:#fff;border:none;border-radius:10px;padding:6px 14px;font-size:12px;font-weight:900;cursor:pointer">▶ Play!</button>'
+    +'</div>';
+  setTimeout(function(){startBunHop();},80);
+}
+function startBunHop(){
+  stopBunHop();
+  var cv=document.getElementById('bhCanvas');if(!cv)return;
+  cv.onclick=doBunJump;
+  document.addEventListener('keydown',bhKey);
+  bhFr=0;bhSpd=3;bhScore=0;bunHopRun=true;
+  bhPlayer={x:60,y:0,vy:0,og:true,w:38,h:38};
+  bhObst=[];bhCarrots=[];
+  bunHopLoop();
+}
+function stopBunHop(){cancelAnimationFrame(bunHopRaf);bunHopRun=false;document.removeEventListener('keydown',bhKey);}
+function bhKey(e){if(e.code==='Space'){e.preventDefault();doBunJump();}}
+function doBunJump(){if(bhPlayer&&bhPlayer.og&&bunHopRun){bhPlayer.vy=-13;bhPlayer.og=false;}}
+function bunHopLoop(){
+  if(!bunHopRun)return;
+  var cv=document.getElementById('bhCanvas');if(!cv){stopBunHop();return;}
+  var W=cv.offsetWidth,H=cv.offsetHeight;cv.width=W;cv.height=H;
+  var ctx=cv.getContext('2d');
+  var gY=H-55;
+  // sky
+  var gr=ctx.createLinearGradient(0,0,0,H);gr.addColorStop(0,'#ffe4f0');gr.addColorStop(0.65,'#fff0f8');gr.addColorStop(0.65,'#90ee90');gr.addColorStop(1,'#5cb85c');
+  ctx.fillStyle=gr;ctx.fillRect(0,0,W,H);
+  // clouds
+  ctx.font='20px serif';ctx.fillText('☁️',(80+bhFr*0.4)%W,28);ctx.fillText('☁️',(220+bhFr*0.25)%W,18);ctx.fillText('☁️',(360+bhFr*0.35)%W,32);
+  // flowers on ground
+  ctx.font='14px serif';
+  for(var fi=0;fi<W;fi+=45)ctx.fillText('🌸',(fi-bhFr*bhSpd*0.5+W*2)%W,gY+4);
+  bhFr++;
+  if(bhFr%50===0)bhScore++;
+  if(bhFr%180===0&&bhSpd<7.5)bhSpd+=0.3;
+  // physics
+  if(!bhPlayer.og)bhPlayer.vy+=0.6;
+  bhPlayer.y+=bhPlayer.vy;
+  if(bhPlayer.y>=gY-bhPlayer.h){bhPlayer.y=gY-bhPlayer.h;bhPlayer.vy=0;bhPlayer.og=true;}
+  // spawn obstacles & carrots
+  if(bhFr%90===0)bhObst.push({x:W+10,y:gY-40,w:32,h:32});
+  if(bhFr%70===0)bhCarrots.push({x:W+20,y:gY-bhPlayer.h-30-Math.random()*50,hit:false});
+  bhObst.forEach(function(o){o.x-=bhSpd;});
+  bhCarrots.forEach(function(c){c.x-=bhSpd;});
+  bhObst=bhObst.filter(function(o){return o.x>-50;});
+  bhCarrots=bhCarrots.filter(function(c){return c.x>-30&&!c.hit;});
+  // collision - carrot collect
+  var pm=8;
+  bhCarrots.forEach(function(c){
+    if(!c.hit&&bhPlayer.x+pm<c.x+20&&bhPlayer.x+bhPlayer.w-pm>c.x&&bhPlayer.y+pm<c.y+20&&bhPlayer.y+bhPlayer.h-pm>c.y){
+      c.hit=true;bhScore+=3;carrots++;updateCarrots();
+      var el=document.getElementById('bhScr');if(el)el.textContent=bhScore;
+    }
+  });
+  // collision - obstacle hit
+  bhObst.forEach(function(o){
+    if(bhPlayer.x+pm<o.x+o.w&&bhPlayer.x+bhPlayer.w-pm>o.x&&bhPlayer.y+pm<o.y+o.h&&bhPlayer.y+bhPlayer.h-pm>o.y){
+      o.x=-999;bhScore=Math.max(0,bhScore-2);
+      var el=document.getElementById('bhScr');if(el)el.textContent=bhScore;
+    }
+  });
+  // draw player bunny
+  ctx.font=bhPlayer.h+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(bunOutfit.color,bhPlayer.x+bhPlayer.w/2,bhPlayer.y+bhPlayer.h/2);
+  // draw obstacles (wolf/fox)
+  bhObst.forEach(function(o){ctx.font='30px serif';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('🐺',o.x,o.y);});
+  // draw carrots
+  bhCarrots.forEach(function(c){if(!c.hit){ctx.font='22px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🥕',c.x+10,c.y+10);}});
+  // score
+  ctx.fillStyle='rgba(136,14,79,0.85)';ctx.font='bold 12px sans-serif';ctx.textAlign='right';ctx.textBaseline='top';ctx.fillText('🥕'+bhScore,W-8,8);
+  bunHopRaf=requestAnimationFrame(bunHopLoop);
+}
+
+// --- DRESS BUNNY ---
+function renderBunDress(){
+  var c=document.getElementById('bunContent');
+  var hat=bunOutfit.hat||'';
+  var acc=bunOutfit.acc||'';
+  c.innerHTML='<div style="background:#ffe4f0;padding:12px;text-align:center">'
+    +'<div style="font-size:11px;font-weight:900;color:#880e4f;margin-bottom:8px;letter-spacing:1px">DRESS YOUR BUNNY!</div>'
+    +'<div style="display:inline-block;background:linear-gradient(135deg,#ffe4f0,#fff0f8);border-radius:20px;padding:16px 24px;border:3px solid #ff69b4;position:relative">'
+    +'<div style="font-size:32px;line-height:1">'+hat+'</div>'
+    +'<div style="font-size:72px;line-height:1">'+bunOutfit.color+'</div>'
+    +'<div style="font-size:28px;line-height:1;margin-top:-8px">'+acc+'</div>'
+    +'<div style="position:absolute;top:-10px;right:-10px;font-size:22px">'+bunOutfit.bg+'</div>'
+    +'</div>'
+    +'</div>'
+    +bunDressSection('🐰 Bunny Color',bunColors,'color')
+    +bunDressSection('🎩 Hats',bunHats,'hat')
+    +bunDressSection('💎 Accessories',bunAccs,'acc')
+    +bunDressSection('🌸 Background',bunBgs,'bg')
+    +'<div style="padding:10px 12px 16px">'
+    +'<button onclick="spop(\'💅\',\'Bunny Saved!\',\'Your bunny looks SO cute! 🐰💕\')" style="width:100%;background:linear-gradient(135deg,#ff69b4,#ff1493);color:#fff;border:none;border-radius:12px;padding:11px;font-size:14px;font-weight:900;cursor:pointer">💾 Save Bunny Look!</button>'
+    +'</div>';
+}
+function bunDressSection(label,items,key){
+  return '<div style="padding:8px 12px">'
+    +'<div style="font-size:10px;font-weight:900;color:#880e4f;margin-bottom:6px;text-transform:uppercase">'+label+'</div>'
+    +'<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px">'
+    +items.map(function(it){
+      var sel=(bunOutfit[key]===it.e);
+      var clear=(key!=='color'&&sel);
+      return '<div onclick="setBunOutfit(\''+key+'\',\''+it.e+'\')" style="flex-shrink:0;background:'+(sel?'#ff1493':'#fff0f8')+';border:2px solid '+(sel?'#fff':'#ff69b4')+';border-radius:10px;padding:7px 9px;cursor:pointer;text-align:center;min-width:54px;transition:all .15s">'
+        +'<div style="font-size:24px">'+it.e+'</div>'
+        +'<div style="font-size:9px;font-weight:700;color:'+(sel?'#fff':'#880e4f')+';margin-top:2px">'+it.n+'</div>'
+        +'</div>';
+    }).join('')
+    +'</div></div>';
+}
+function setBunOutfit(key,val){
+  if(bunOutfit[key]===val&&key!=='color')bunOutfit[key]=null;
+  else bunOutfit[key]=val;
+  renderBunDress();
+}
+
+// --- FEED TIME ---
+function renderBunFeed(){
+  var c=document.getElementById('bunContent');
+  c.innerHTML='<div style="background:#ffe4f0;padding:10px 12px;text-align:center">'
+    +'<div style="font-size:14px;font-weight:900;color:#880e4f;margin-bottom:4px">🥕 Feed Your Bunny!</div>'
+    +'<div style="font-size:12px;color:#c2185b">Tap foods your bunny LOVES to earn carrots!</div>'
+    +'<div style="font-size:64px;margin:10px 0;transition:transform .15s" id="bunFeedChar">'+bunOutfit.color+'</div>'
+    +'<div id="bunFeedMsg" style="font-size:13px;font-weight:800;color:#e91e8c;min-height:20px;margin-bottom:6px"></div>'
+    +'</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px">'
+    +feedFoods.map(function(f,i){
+      return '<div onclick="feedBunny('+i+')" style="background:#fff;border:2px solid #ff69b4;border-radius:14px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .15s" onmouseover="this.style.transform=\'scale(1.1)\'" onmouseout="this.style.transform=\'\'">'+
+        '<div style="font-size:32px">'+f.e+'</div>'+
+        '<div style="font-size:10px;font-weight:800;color:#880e4f;margin-top:3px">'+f.n+'</div>'+
+        '</div>';
+    }).join('')
+    +'</div>'
+    +'<div style="text-align:center;padding:0 12px 14px;font-size:12px;color:#aaa;font-weight:700">🥕 Carrots collected: <span id="carrotCount">'+carrots+'</span></div>';
+}
+function feedBunny(i){
+  var f=feedFoods[i];
+  var char=document.getElementById('bunFeedChar');
+  var msg=document.getElementById('bunFeedMsg');
+  var cnt=document.getElementById('carrotCount');
+  if(f.fav){
+    carrots+=3;updateCarrots();
+    if(char)char.style.transform='scale(1.3)';
+    setTimeout(function(){if(char)char.style.transform='scale(1)';},300);
+    if(msg){msg.textContent='😍 Yummy! Bunny LOVES '+f.e+' '+f.n+'! +3 🥕';msg.style.color='#00c853';}
+  } else {
+    carrots+=1;updateCarrots();
+    if(char)char.style.transform='scale(0.9)';
+    setTimeout(function(){if(char)char.style.transform='scale(1)';},300);
+    if(msg){msg.textContent='😐 Bunny doesn\'t really like '+f.e+'... +1 🥕';msg.style.color='#ff9800';}
+  }
+  if(cnt)cnt.textContent=carrots;
+}
+
+// --- MATCH CARDS ---
+var matchEmojis=['🐰','🥕','🌷','🍓','🌸','🐣','🦋','🌈'];
+function renderBunMatch(){
+  matchCards=[];matchFlipped=[];matchSolved=0;matchLocked=false;
+  var deck=matchEmojis.concat(matchEmojis).sort(function(){return Math.random()-.5;});
+  deck.forEach(function(e,i){matchCards.push({e:e,idx:i,flipped:false,solved:false});});
+  renderMatchGrid();
+}
+function renderMatchGrid(){
+  var c=document.getElementById('bunContent');
+  var won=matchSolved===matchEmojis.length;
+  c.innerHTML='<div style="background:#ffe4f0;padding:10px 12px;display:flex;justify-content:space-between;align-items:center">'
+    +'<div style="font-size:13px;font-weight:900;color:#880e4f">🃏 Memory Match!</div>'
+    +'<div style="font-size:12px;font-weight:800;color:#e91e8c">✅ '+matchSolved+'/'+matchEmojis.length+' pairs</div>'
+    +'</div>'
+    +(won?'<div style="text-align:center;padding:16px;background:#fff0f8"><div style="font-size:52px">🏆</div><div style="font-size:18px;font-weight:900;color:#880e4f">You matched all pairs!</div><div style="font-size:13px;color:#c2185b;margin-top:4px">+10 🥕 Carrots!</div><button onclick="renderBunMatch()" style="margin-top:10px;background:#ff1493;color:#fff;border:none;border-radius:11px;padding:9px 22px;font-size:13px;font-weight:900;cursor:pointer">Play Again!</button></div>':'')
+    +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px">'
+    +matchCards.map(function(card){
+      var show=card.flipped||card.solved;
+      return '<div onclick="flipCard('+card.idx+')" style="background:'+(card.solved?'#e8f5e9':show?'#fff0f8':'#ff69b4')+';border:2px solid '+(card.solved?'#4caf50':'#ff1493')+';border-radius:12px;padding:10px 6px;text-align:center;cursor:'+(card.solved?'default':'pointer')+';transition:all .2s;min-height:56px;display:flex;align-items:center;justify-content:center">'
+        +'<div style="font-size:28px">'+(show?card.e:'❓')+'</div>'
+        +'</div>';
+    }).join('')
+    +'</div>';
+}
+function flipCard(idx){
+  if(matchLocked)return;
+  var card=matchCards[idx];
+  if(card.flipped||card.solved)return;
+  card.flipped=true;
+  matchFlipped.push(idx);
+  if(matchFlipped.length===2){
+    matchLocked=true;
+    var a=matchCards[matchFlipped[0]],b=matchCards[matchFlipped[1]];
+    if(a.e===b.e){
+      setTimeout(function(){a.solved=true;b.solved=true;matchFlipped=[];matchLocked=false;matchSolved++;if(matchSolved===matchEmojis.length){carrots+=10;updateCarrots();}renderMatchGrid();},500);
+    } else {
+      setTimeout(function(){a.flipped=false;b.flipped=false;matchFlipped=[];matchLocked=false;renderMatchGrid();},900);
+    }
+  }
+  renderMatchGrid();
+}
+
+// --- BUNNY GARDEN ---
+function renderBunGarden(){
+  var c=document.getElementById('bunContent');
+  if(gardenPlots.length===0){
+    for(var i=0;i<6;i++)gardenPlots.push({seed:null,planted:false,ready:false,timer:0,timerMax:0});
+  }
+  // advance timers
+  gardenPlots.forEach(function(p){
+    if(p.planted&&!p.ready){
+      p.timer++;
+      if(p.timer>=p.timerMax)p.ready=true;
+    }
+  });
+  c.innerHTML='<div style="background:#ffe4f0;padding:10px 12px;text-align:center">'
+    +'<div style="font-size:14px;font-weight:900;color:#880e4f;margin-bottom:2px">🌷 Bunny\'s Garden</div>'
+    +'<div style="font-size:11px;color:#c2185b">Plant seeds, watch them grow, harvest for carrots!</div>'
+    +'</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:12px">'
+    +gardenPlots.map(function(plot,i){
+      if(!plot.planted){
+        return '<div style="background:#fff3e0;border:2px dashed #ffcc80;border-radius:14px;padding:12px;text-align:center;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">'
+          +'<div style="font-size:11px;font-weight:700;color:#8d6e63">Empty Plot</div>'
+          +'<div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:center">'
+          +gardenSeeds.map(function(s,si){return '<div onclick="plantSeed('+i+','+si+')" style="font-size:20px;cursor:pointer;background:#fff;border:2px solid #ffcc80;border-radius:8px;padding:3px 5px" title="Plant '+s.n+'">'+s.e+'</div>';}).join('')
+          +'</div></div>';
+      } else if(plot.ready){
+        return '<div style="background:#e8f5e9;border:2px solid #4caf50;border-radius:14px;padding:12px;text-align:center;cursor:pointer;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px" onclick="harvestPlot('+i+')">'
+          +'<div style="font-size:36px">'+plot.seed.e+'</div>'
+          +'<div style="font-size:10px;font-weight:900;color:#2e7d32">✅ READY!</div>'
+          +'<div style="font-size:10px;color:#4caf50;font-weight:700">Tap to harvest! +5🥕</div>'
+          +'</div>';
+      } else {
+        var pct=Math.round((plot.timer/plot.timerMax)*100);
+        return '<div style="background:#fff8e1;border:2px solid #ffcc80;border-radius:14px;padding:12px;text-align:center;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">'
+          +'<div style="font-size:28px;opacity:0.6">'+plot.seed.e+'</div>'
+          +'<div style="font-size:10px;font-weight:700;color:#8d6e63">Growing... '+pct+'%</div>'
+          +'<div style="height:6px;background:#f5f5f5;border-radius:3px;width:100%;overflow:hidden;margin-top:2px"><div style="height:100%;background:#4caf50;width:'+pct+'%;border-radius:3px;transition:width .3s"></div></div>'
+          +'<button onclick="waterPlot('+i+')" style="background:#2196f3;color:#fff;border:none;border-radius:8px;padding:3px 10px;font-size:10px;font-weight:900;cursor:pointer;margin-top:2px">💧 Water</button>'
+          +'</div>';
+      }
+    }).join('')
+    +'</div>'
+    +'<div style="text-align:center;padding:0 12px 14px">'
+    +'<div style="font-size:12px;color:#888;font-weight:700">🥕 Carrots: '+carrots+' &nbsp;|&nbsp; Harvest to earn more!</div>'
+    +'</div>';
+}
+function plantSeed(plotIdx,seedIdx){
+  var s=gardenSeeds[seedIdx];
+  gardenPlots[plotIdx]={seed:{e:s.e,n:s.n},planted:true,ready:false,timer:0,timerMax:s.time*10};
+  renderBunGarden();
+}
+function waterPlot(i){
+  var p=gardenPlots[i];
+  if(p.planted&&!p.ready){p.timer=Math.min(p.timer+5,p.timerMax);if(p.timer>=p.timerMax)p.ready=true;}
+  renderBunGarden();
+}
+function harvestPlot(i){
+  var p=gardenPlots[i];
+  if(p.ready){carrots+=5;updateCarrots();spop('🌷','Harvested!',p.seed.e+' '+p.seed.n+' harvested! +5 🥕 Carrots!');gardenPlots[i]={seed:null,planted:false,ready:false,timer:0,timerMax:0};}
+  renderBunGarden();
+}
+
+// ===== INIT =====
+rCP();uc();
+</script>
+</body>
+</html>

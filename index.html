@@ -62,7 +62,7 @@ body{font-family:'Segoe UI',sans-serif;background:#7ecbff;min-height:100vh;overf
 <div id="map" class="scr on">
   <div class="hud" style="background:linear-gradient(180deg,#bbdefb 0%,#90caf9 100%);border-bottom:4px solid #64b5f6;box-shadow:0 6px 16px rgba(33,150,243,0.25);position:relative">
     <!-- Cute bunny sitting on top of the top bar -->
-    <canvas id="bottomBunny" width="160" height="140" style="position:absolute;bottom:-132px;left:50%;transform:translateX(-50%);pointer-events:none;z-index:10"></canvas>
+    <canvas id="bottomBunny" width="160" height="140" style="position:absolute;bottom:-112px;right:14px;width:118px;height:104px;pointer-events:none;z-index:10"></canvas>
     <div class="cpill" style="box-shadow:0 4px 8px rgba(0,0,0,0.15)">🪙<span id="coins">500</span></div>
     <div class="htitle" style="color:#7c4dff;font-size:38px;font-weight:900;text-shadow:0 3px 12px rgba(124,77,255,0.3),0 1px 0 rgba(255,255,255,0.7)">Happy Colorful World 🌈</div>
     <div id="gdot" style="background:linear-gradient(135deg,#ff1744,#d50000);color:#fff;border-radius:20px;padding:10px 20px;font-size:20px;font-weight:900;cursor:pointer;box-shadow:0 5px 14px rgba(255,23,68,0.4)" onclick="go('gift')">🎁 Gift!</div>
@@ -96,7 +96,15 @@ body{font-family:'Segoe UI',sans-serif;background:#7ecbff;min-height:100vh;overf
     </div>
 
     <!-- 3D Buildings - Row 5 (brand new games) -->
-    <div style="position:absolute;bottom:442px;left:0;right:0;display:grid;grid-template-columns:repeat(6,1fr);gap:3px;padding:0 3px">
+    <div style="position:absolute;bottom:442px;left:0;right:0;display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding:0 3px">
+
+      <div class="bld" onclick="go('academy')">
+        <div class="bld-box" style="background:linear-gradient(145deg,#ffd54f,#ff6f00)">
+          <div style="font-size:36px;line-height:1;filter:drop-shadow(0 3px 5px rgba(0,0,0,0.3))">🏆</div>
+        </div>
+        <div class="bld-lbl" style="background:rgba(230,81,0,.95)">Word Academy</div>
+        <div class="bld-tag" style="background:#ff6f00;color:#fff">EARN IT</div>
+      </div>
 
       <div class="bld" onclick="go('nailstudio2')">
         <div class="bld-box" style="background:linear-gradient(145deg,#e040fb,#6a1b9a)">
@@ -159,12 +167,12 @@ body{font-family:'Segoe UI',sans-serif;background:#7ecbff;min-height:100vh;overf
         <div class="bld-tag" style="background:linear-gradient(90deg,#f06292,#ad1457);color:#fff;font-size:9px">$1000 DAILY</div>
       </div>
 
-      <div class="bld" onclick="go('academy')" style="width:28%">
-        <div class="bld-box" style="background:linear-gradient(145deg,#ffd54f,#ff6f00);padding:8px 4px 7px">
-          <div style="font-size:36px;line-height:1;filter:drop-shadow(0 3px 5px rgba(0,0,0,0.35))">🏆</div>
+      <div class="bld" onclick="go('goodchoices')" style="width:32%">
+        <div class="bld-box" style="background:linear-gradient(145deg,#81d4fa,#1565c0);padding:10px 4px 9px;border-bottom-width:7px">
+          <div style="font-size:44px;line-height:1;filter:drop-shadow(0 3px 5px rgba(0,0,0,0.35))">🌟</div>
         </div>
-        <div class="bld-lbl" style="background:rgba(230,81,0,.95);font-size:10px">⚡ WORD ACADEMY ⚡</div>
-        <div class="bld-tag" style="background:linear-gradient(90deg,#ffd54f,#ff6f00);color:#fff;font-size:9px">EARN IT!</div>
+        <div class="bld-lbl" style="background:rgba(21,101,192,.98);font-size:12px;padding:3px 6px">🌟 RULES TEST 🌟</div>
+        <div class="bld-tag" style="background:linear-gradient(90deg,#00c853,#1565c0);color:#fff;font-size:10px;font-weight:900">START HERE</div>
       </div>
 
       <div class="bld" onclick="go('worldplace')" style="width:28%">
@@ -1102,6 +1110,17 @@ body{font-family:'Segoe UI',sans-serif;background:#7ecbff;min-height:100vh;overf
   <div style="flex:1;overflow-y:auto;padding:10px;background:linear-gradient(180deg,#fff8e1,#fffde7)" id="bkContent"></div>
 </div>
 
+<!-- ===== GOOD CHOICES ACADEMY ===== -->
+<div id="goodchoices" class="scr">
+  <div class="hud" style="background:linear-gradient(135deg,#1565c0,#42a5f5);border-bottom:4px solid #0d47a1">
+    <button class="bbtn" style="background:#0d47a1" onclick="go('map')">← Back</button>
+    <div class="htitle" style="color:#fff;font-size:17px">🌟 Good Choices Academy!</div>
+    <div class="cpill" style="background:#e3f2fd;border-color:#90caf9;color:#0d47a1">⭐<span id="gcaScore">0</span></div>
+  </div>
+  <div class="tabs" style="background:#e3f2fd;border-bottom:3px solid #90caf9" id="gcaTabs"></div>
+  <div style="flex:1;overflow-y:auto;padding:12px;background:linear-gradient(180deg,#e3f2fd,#fff)" id="gcaContent"></div>
+</div>
+
 <!-- POPUP -->
 <div class="pop" id="pop">
   <div class="pcard">
@@ -1140,6 +1159,7 @@ var storyMarketTab='market';
 var storyWriteState={title:'',emoji:'🐉',genre:'Animal',chars:[],power:'',price:5,text:''};
 var myLibrary=[];
 var storyEarnings=0;
+var gcaTab=0,gcaIdx=0,gcaScore=0,gcaAnswered=false;
 
 // ===== DATA =====
 var WD={
@@ -1170,6 +1190,135 @@ var SGDATA=[
   {cat:'Restaurant',qs:[{e:'🍽️',q:'How to ask for a table politely?',o:['Give me a table!','Table for two, please','I am hungry!','Feed me now'],a:1,x:'"Table for two, please" is polite!'},{e:'📋',q:'May I see the ___ ? (list of food)',o:['bill','menu','recipe','order'],a:1,x:'"Menu" = list of food & drinks!'},{e:'😋',q:'Word meaning very hungry:',o:['full','stuffed','starving','satisfied'],a:2,x:'"Starving" = extremely hungry!'},{e:'😊',q:'"Enjoy your meal!" — you reply:',o:['Whatever','Finally!','Thank you!','About time!'],a:2,x:'"Thank you!" is always right!'},{e:'✏️',q:'Which sentence is correct?',o:['I would like a burger, please','I wanting burger','Me want burger','Burger give me'],a:0,x:'"I would like" is correct!'}]},
   {cat:'Fashion',qs:[{e:'👗',q:'Clothes for exercise are called:',o:['formal','casual','sportswear','uniform'],a:2,x:'"Sportswear" = exercise clothes!'},{e:'👖',q:'Opposite of "tight" clothes:',o:['small','narrow','loose','thin'],a:2,x:'"Loose" is the opposite!'},{e:'🧥',q:'I wear a ___ when cold outside.',o:['swimsuit','jacket','shorts','sandals'],a:1,x:'"Jacket" keeps you warm!'},{e:'💃',q:'She ___ a red dress to the party.',o:['wear','wears','wore','wearing'],a:2,x:'"Wore" is past tense!'},{e:'🎨',q:'"A ___ red skirt" — what goes first?',o:['big','beautiful','nice','pretty'],a:1,x:'Opinion before color: "beautiful red"!'}]},
 ];
+
+var GCADATA=[
+  {cat:'Daily Life',color:'#1565c0',qs:[
+    {e:'🪥',kind:'Pick one',q:'You wake up and want to play right away. What is the best first choice?',o:['Brush teeth and get dressed','Hide under the blanket','Watch videos before getting ready','Leave pajamas on all day'],a:0,x:'Taking care of your body first helps the whole day feel easier.'},
+    {e:'🍽️',kind:'Yes or No',q:'At the table, is it a good choice to talk with food in your mouth?',o:['Yes, it is funny','No, chew and swallow first'],a:1,x:'Chew first, then talk. That keeps food safe and manners kind.'},
+    {e:'🧸',kind:'Best order',q:'Your toys are on the floor after play time. What should happen next?',o:['Put toys back, then choose a new activity','Step over them','Wait for someone else','Push them under the bed'],a:0,x:'Clean-up is part of play. It keeps the room safe and ready.'},
+    {e:'😡',kind:'Calm body',q:'You feel mad because a game ended. What can you do?',o:['Stomp and yell','Take three breaths and use words','Throw the toy','Say mean words'],a:1,x:'Big feelings are okay. Safe bodies and kind words are the rule.'}
+  ]},
+  {cat:'Friends',color:'#7b1fa2',qs:[
+    {e:'🎲',kind:'Sharing',q:'Your friend wants a turn with your game. What is fair?',o:['Say "Never!"','Make a turn plan','Grab it tighter','Walk away with it'],a:1,x:'A turn plan helps everyone feel included.'},
+    {e:'💬',kind:'Kind words',q:'A classmate makes a mistake. What can you say?',o:['That was bad','I can help you','Everyone laugh','You are not good'],a:1,x:'Helpful words make friendship stronger.'},
+    {e:'🙋',kind:'Problem solving',q:'Two friends want different games. What can you try?',o:['Only my choice matters','Vote, take turns, or mix ideas','Quit being friends','Tell them they are wrong'],a:1,x:'Good friends look for a fair solution.'},
+    {e:'🛑',kind:'Body rule',q:'Someone says "Stop, I do not like that." What should you do?',o:['Stop right away','Do it one more time','Laugh','Say they are too sensitive'],a:0,x:'Stop means stop. Listening keeps everyone safe.'}
+  ]},
+  {cat:'Outings',color:'#00838f',qs:[
+    {e:'🚗',kind:'Safety',q:'Before the car moves, what do you do?',o:['Buckle seat belt','Stand up to see better','Open the door','Put feet on the seat'],a:0,x:'Seat belts are a must every ride.'},
+    {e:'🏞️',kind:'Stay together',q:'At a park, you see something exciting far away. What is the best choice?',o:['Run there alone','Ask a grown-up to go with you','Hide as a joke','Follow a stranger'],a:1,x:'On outings, stay where your grown-up can see you.'},
+    {e:'🗑️',kind:'Care for places',q:'You finish a snack outside. Where does the wrapper go?',o:['On the ground','In a trash can or your bag','Behind a tree','Into the water'],a:1,x:'Good visitors leave places clean.'},
+    {e:'🏛️',kind:'Museum voice',q:'In a quiet public place, which voice works best?',o:['Indoor voice','Screaming voice','Running voice','Singing as loud as possible'],a:0,x:'Indoor voice helps other people enjoy the place too.'}
+  ]},
+  {cat:'School',color:'#ef6c00',qs:[
+    {e:'🎒',kind:'Ready habit',q:'What helps school mornings go smoothly?',o:['Pack backpack the night before','Look for homework at the last second','Leave shoes anywhere','Skip breakfast every day'],a:0,x:'Getting ready early makes mornings calmer.'},
+    {e:'✋',kind:'Class rule',q:'You know the answer while the teacher is talking. What do you do?',o:['Shout it out','Raise your hand and wait','Talk over a friend','Leave your seat'],a:1,x:'Raise your hand so everyone gets a chance to learn.'},
+    {e:'📚',kind:'Learning habit',q:'Homework feels hard. What is a good first step?',o:['Say "I quit"','Try one small part and ask for help','Rip the paper','Guess everything fast'],a:1,x:'Small steps and help make hard work possible.'},
+    {e:'🤝',kind:'Teamwork',q:'Your group has a job to do. What helps the team?',o:['Do your part','Let others do everything','Boss everyone around','Ignore the group'],a:0,x:'Teams work best when each person does a part.'}
+  ]}
+];
+
+GCADATA[0].qs.push(
+  {e:'🧼',kind:'Clean hands',q:'You come home from school. What should you do before snack?',o:['Wash hands','Touch all the snacks','Wipe hands on clothes','Skip it because hands look clean'],a:0,x:'Hands can carry tiny germs. Wash first, then snack.'},
+  {e:'👟',kind:'Put away',q:'Your shoes are in the walkway. What is the best choice?',o:['Leave them there','Put them by the door or in the closet','Kick them away','Hide one shoe'],a:1,x:'Clear walkways keep everyone safe.'},
+  {e:'🛏️',kind:'Morning habit',q:'What helps your room feel ready for the day?',o:['Make the bed','Throw pillows on the floor','Leave blankets twisted','Jump on the bed'],a:0,x:'A small tidy habit makes the room feel calm.'},
+  {e:'📺',kind:'Screen rule',q:'A grown-up says screen time is done. What should you do?',o:['Pause and turn it off','Beg for one hour','Hide the tablet','Get angry and yell'],a:0,x:'Stopping when time is up shows self-control.'},
+  {e:'🚰',kind:'Healthy body',q:'After running and playing, your body needs:',o:['Water','Only candy','No rest ever','A loud scream'],a:0,x:'Water helps your body feel good after play.'},
+  {e:'🧺',kind:'Laundry',q:'Dirty clothes belong:',o:['On the floor','In the laundry basket','Under the pillow','On the kitchen table'],a:1,x:'Laundry baskets help clothes get clean again.'},
+  {e:'🗣️',kind:'Polite words',q:'You need help opening something. What can you say?',o:['Open it now!','Can you help me, please?','I cannot do anything','Give it!'],a:1,x:'Please makes asking for help kind and clear.'},
+  {e:'😴',kind:'Bedtime',q:'At bedtime, what helps your body rest?',o:['Brush teeth and calm down','Start a loud game','Run around the house','Ask for ten more videos'],a:0,x:'A calm bedtime routine helps your brain sleep.'},
+  {e:'🥣',kind:'Try food',q:'There is a new food at dinner. What is a respectful choice?',o:['Say yuck loudly','Try a tiny taste or say no thank you','Make a face at everyone','Push it away'],a:1,x:'You can be honest and still use kind manners.'},
+  {e:'📦',kind:'Responsibility',q:'You spill blocks everywhere. What should happen?',o:['Clean them up','Walk away fast','Blame someone else','Cover them with a blanket'],a:0,x:'If we make the mess, we help clean the mess.'}
+);
+GCADATA[1].qs.push(
+  {e:'👂',kind:'Listening',q:'A friend is telling a story. What is kind?',o:['Listen and look at them','Interrupt every word','Walk away while they talk','Change the topic fast'],a:0,x:'Listening shows your friend they matter.'},
+  {e:'🎨',kind:'Supplies',q:'Your friend is using the color you want. What can you do?',o:['Grab it','Ask for a turn when they finish','Break the crayon','Say it is mine forever'],a:1,x:'Asking for a turn keeps art time friendly.'},
+  {e:'😢',kind:'Comfort',q:'A classmate looks sad. What is a good choice?',o:['Ask if they are okay','Laugh at them','Tell everyone','Ignore them always'],a:0,x:'A kind check-in can help someone feel less alone.'},
+  {e:'🏃',kind:'Game rule',q:'You lose a race. What can you say?',o:['Good game','That was unfair always','I hate this','You are slow'],a:0,x:'Good sportsmanship matters when we win or lose.'},
+  {e:'🤫',kind:'Secret',q:'A friend tells you a small private worry. What should you do?',o:['Tell the whole class','Keep it private unless someone is unsafe','Post it in chat','Make a joke'],a:1,x:'Private feelings deserve respect. Unsafe problems need grown-up help.'},
+  {e:'🧩',kind:'Taking turns',q:'Two kids want the same puzzle piece. What works?',o:['Take turns trying it','Throw it','Hide it','Quit the puzzle'],a:0,x:'Taking turns helps the group keep going.'},
+  {e:'💌',kind:'Apology',q:'You bump someone by accident. What should you say?',o:['Sorry, are you okay?','Move!','It was your fault','Nothing'],a:0,x:'A quick apology can repair a small accident.'},
+  {e:'🎁',kind:'Gratitude',q:'A friend shares a sticker with you. What do you say?',o:['Thank you','Only one?','I wanted a better one','Finally'],a:0,x:'Thank you tells people you noticed their kindness.'},
+  {e:'🧠',kind:'Different ideas',q:'Your friend likes a game you do not like. What is respectful?',o:['Say it is boring and bad','Say it is not my favorite, but you can like it','Never talk to them','Laugh'],a:1,x:'Friends can like different things.'},
+  {e:'🪑',kind:'Personal space',q:'Someone is sitting quietly. What should you do before hugging?',o:['Ask first','Jump on them','Pull their arm','Yell surprise'],a:0,x:'Asking first respects body space.'}
+);
+GCADATA[2].qs.push(
+  {e:'🛒',kind:'Store rule',q:'At a store, what should your hands do?',o:['Touch only with permission','Open everything','Run hands on every shelf','Hide items'],a:0,x:'Stores are shared places. Ask before touching.'},
+  {e:'🚦',kind:'Street safety',q:'Before crossing a street, you should:',o:['Stop, look, and stay with your grown-up','Run fast','Look only at your shoes','Close your eyes'],a:0,x:'Street safety needs slow eyes and a grown-up.'},
+  {e:'🎡',kind:'Waiting',q:'There is a long line for a ride. What is okay?',o:['Wait your turn','Push to the front','Complain loudly the whole time','Leave the line and sneak back'],a:0,x:'Lines help everyone get a fair turn.'},
+  {e:'🍿',kind:'Movie place',q:'During a movie, what voice should you use?',o:['Quiet whisper if needed','Outdoor shouting','Singing voice','Noisy snack banging'],a:0,x:'Quiet voices help everyone watch.'},
+  {e:'🧴',kind:'Sun safety',q:'Before a sunny playground trip, what might you need?',o:['Sunscreen or hat if grown-up says','A winter scarf only','No shoes','Paint on hands'],a:0,x:'Sun protection keeps skin safer outside.'},
+  {e:'🐕',kind:'Animals',q:'You see a cute dog outside. What is the rule?',o:['Ask the owner before petting','Run and hug it','Pull its tail','Feed it candy'],a:0,x:'Always ask before touching someone else’s pet.'},
+  {e:'🚻',kind:'Bathroom trip',q:'In a public place, you need the bathroom. What do you do?',o:['Tell your grown-up','Walk away alone','Ask a stranger to take you','Wait until panic'],a:0,x:'A grown-up should know where you are.'},
+  {e:'📣',kind:'Emergency',q:'If you cannot see your grown-up, what is safest?',o:['Stay in one spot and ask a worker or safe grown-up for help','Run outside','Hide','Follow another family'],a:0,x:'Staying findable helps your grown-up locate you.'},
+  {e:'🌿',kind:'Nature',q:'On a trail, what is respectful?',o:['Stay on the path','Pick every flower','Throw rocks at trees','Leave trash'],a:0,x:'Paths protect people and nature.'},
+  {e:'🍦',kind:'Buying',q:'You want a treat on an outing. What can you say?',o:['Can we please get one?','Buy it now!','I need it forever','I will scream'],a:0,x:'A polite ask is the best way to start.'}
+);
+GCADATA[3].qs.push(
+  {e:'📝',kind:'Work habit',q:'You finish classwork early. What is a good choice?',o:['Check your work or read quietly','Distract friends','Bang pencils','Leave the room'],a:0,x:'Quiet finished choices help the class keep learning.'},
+  {e:'📣',kind:'Voice level',q:'In the library, what voice fits best?',o:['Whisper or quiet voice','Playground voice','Silly yelling','Drum voice'],a:0,x:'Libraries need quiet so people can read.'},
+  {e:'🧑‍🏫',kind:'Respect',q:'The teacher gives directions. What should your body do?',o:['Eyes and ears ready','Spin around','Talk to a neighbor','Crawl under the table'],a:0,x:'Ready bodies make directions easier to follow.'},
+  {e:'🍎',kind:'Lunch',q:'At lunch, what is kind?',o:['Eat your own food and use manners','Make fun of food','Throw napkins','Take someone else’s snack'],a:0,x:'Lunch is better when everyone feels respected.'},
+  {e:'📅',kind:'Planning',q:'You have homework due tomorrow. What helps?',o:['Do it before play or make a plan','Forget it','Hide it','Say it disappeared'],a:0,x:'A plan makes homework smaller.'},
+  {e:'🙋',kind:'Help',q:'You do not understand a lesson. What can you do?',o:['Ask a question','Pretend forever','Laugh at the page','Quit school'],a:0,x:'Questions help your brain grow.'},
+  {e:'🧃',kind:'Backpack',q:'A drink spills in your backpack. What should you do?',o:['Tell a grown-up and help clean','Hide it until it smells','Blame the backpack','Put papers on top'],a:0,x:'Telling early helps fix the problem.'},
+  {e:'🚌',kind:'Bus rule',q:'On the school bus, what keeps people safe?',o:['Sit facing forward','Stand while moving','Throw things','Block the aisle'],a:0,x:'Bus rules protect everyone on the ride.'},
+  {e:'🧪',kind:'Curiosity',q:'In science, you want to touch materials. What first?',o:['Wait for directions','Grab them fast','Taste them','Mix everything'],a:0,x:'Science tools need careful directions.'},
+  {e:'📖',kind:'Reading',q:'A word is hard to read. What can help?',o:['Sound it out or ask for help','Skip every hard word','Rip the page','Say reading is bad'],a:0,x:'Hard words get easier with strategies.'}
+);
+GCADATA[0].qs.push(
+  {e:'🧹',kind:'Helper habit',q:'You see crumbs under your chair. What is a helpful choice?',o:['Sweep or ask for help cleaning','Leave them for later','Step on them','Move chairs over them'],a:0,x:'Small helpers make the home nicer for everyone.'},
+  {e:'🧴',kind:'Bathroom habit',q:'After using soap, what should you do with the faucet?',o:['Turn it off','Let it run','Splash the mirror','Walk away'],a:0,x:'Turning water off saves water and keeps the sink calm.'},
+  {e:'🧦',kind:'Getting dressed',q:'You cannot find matching socks. What can you do?',o:['Ask calmly or choose another pair','Throw clothes everywhere','Cry before looking','Blame the socks'],a:0,x:'Calm problem solving helps you get ready faster.'}
+);
+GCADATA[1].qs.push(
+  {e:'🫶',kind:'Include others',q:'A kid asks to join your game. What can you do?',o:['Find a role for them if there is space','Say no before thinking','Pretend not to hear','Tell them to go away'],a:0,x:'Including others can make the game more fun.'},
+  {e:'🎭',kind:'Teasing',q:'A joke makes your friend look upset. What should you do?',o:['Stop and check on them','Keep joking louder','Tell them to relax','Call more friends to laugh'],a:0,x:'A joke is not fun if someone feels hurt.'},
+  {e:'🧃',kind:'Sharing space',q:'Your drink is close to a friend’s drawing. What is smart?',o:['Move it away from the paper','Wave it over the art','Put it on the drawing','Knock it for fun'],a:0,x:'Careful choices protect other people’s work.'},
+  {e:'🗨️',kind:'Disagreeing',q:'You disagree with a friend. What sounds respectful?',o:['I think something different','You are wrong forever','That is silly','Only my idea is good'],a:0,x:'Different opinions can be shared kindly.'},
+  {e:'🪁',kind:'Fair play',q:'Your friend is new to a game. What helps?',o:['Explain the rules kindly','Laugh when they miss','Change rules to win','Quit immediately'],a:0,x:'Teaching kindly makes games fair and friendly.'}
+);
+GCADATA[2].qs.push(
+  {e:'🎒',kind:'Trip bag',q:'Before leaving for an outing, what should you check?',o:['Water, jacket, or needed things','Only toys','Nothing at all','Someone else’s bag'],a:0,x:'A quick check helps the trip go smoothly.'},
+  {e:'🧑‍🤝‍🧑',kind:'Crowds',q:'In a crowded place, where should you stay?',o:['Close to your grown-up','Far ahead alone','Behind strangers','Inside a store by yourself'],a:0,x:'Crowds are safer when you stay close.'},
+  {e:'🎟️',kind:'Tickets',q:'You get a ticket or wristband. What should you do?',o:['Keep it safe','Crumple it up','Trade with strangers','Throw it away'],a:0,x:'Tickets help you enter and enjoy the place.'},
+  {e:'🚪',kind:'Leaving',q:'Before leaving a place, what is a good habit?',o:['Check your things','Run out first','Leave trash behind','Take someone else’s item'],a:0,x:'Checking helps you bring home what belongs to you.'},
+  {e:'🍬',kind:'Strangers',q:'A stranger offers candy. What should you do?',o:['Ask your grown-up first','Take it quickly','Follow them','Keep it secret'],a:0,x:'Your grown-up needs to know before you accept things.'},
+  {e:'🧊',kind:'Patience',q:'The food is taking a long time. What can you do?',o:['Wait calmly or chat quietly','Bang the table','Yell at workers','Run around'],a:0,x:'Patience is part of being in public.'},
+  {e:'🎤',kind:'Show time',q:'At a show, people are performing. What is respectful?',o:['Watch and clap at the right time','Talk loudly the whole time','Stand on the seat','Block others'],a:0,x:'Performers and guests both need respect.'},
+  {e:'🚙',kind:'Car door',q:'When you arrive, who opens the car door?',o:['A grown-up or when a grown-up says it is safe','You open it while moving','A stranger','Nobody ever'],a:0,x:'Car doors need grown-up safety checks.'},
+  {e:'🧭',kind:'Lost rule',q:'If you feel lost, what words can you say to a worker?',o:['I need help finding my grown-up','Take me anywhere','Do you have games?','Never mind'],a:0,x:'Clear words help safe adults help you.'}
+);
+GCADATA[3].qs.push(
+  {e:'🖍️',kind:'Supplies',q:'Your pencil breaks during work. What should you do?',o:['Sharpen it or ask for another','Throw it','Stop all work','Take a friend’s without asking'],a:0,x:'Small school problems can be solved calmly.'},
+  {e:'🧍',kind:'Line rule',q:'When the class lines up, what should you do?',o:['Stand in your spot with safe hands','Push ahead','Dance into people','Leave the line'],a:0,x:'Lines keep the class safe and organized.'},
+  {e:'🔔',kind:'Transition',q:'The bell rings or the teacher says clean up. What next?',o:['Stop and follow the next direction','Keep playing forever','Hide materials','Argue'],a:0,x:'Transitions are easier when you listen the first time.'},
+  {e:'🧑‍🤝‍🧑',kind:'Partner work',q:'Your partner has an idea. What should you do?',o:['Listen before deciding','Say no instantly','Take over everything','Ignore them'],a:0,x:'Partners work best when both voices matter.'},
+  {e:'🎯',kind:'Focus',q:'You notice noises while working. What can help?',o:['Look back at your work and try again','Join every noise','Leave your chair','Give up'],a:0,x:'Focus can come back with practice.'},
+  {e:'🗂️',kind:'Organization',q:'Where should finished papers go?',o:['The folder or turn-in spot','The floor','Inside a lunchbox','Behind a shelf'],a:0,x:'Organized papers are easier to find.'},
+  {e:'🚰',kind:'Water break',q:'At the water fountain, what is fair?',o:['Take a drink and let the next person go','Stay there forever','Splash water','Cut the line'],a:0,x:'Quick turns help everyone get water.'},
+  {e:'🎧',kind:'Listening center',q:'When using class headphones, what is careful?',o:['Use gentle hands and safe volume','Pull the cord','Yell into them','Throw them on the table'],a:0,x:'Class tools need gentle care.'},
+  {e:'🧘',kind:'Calm down',q:'If school feels too loud, what can you try?',o:['Take breaths or ask for a calm break','Scream louder','Push someone','Run away'],a:0,x:'Calm tools help your body feel safe again.'},
+  {e:'🌱',kind:'Growth mindset',q:'You make a mistake on work. What can you think?',o:['Mistakes help me learn','I am bad at everything','I should hide it','No one can help'],a:0,x:'Mistakes are part of learning.'},
+  {e:'🧑‍🏫',kind:'Substitute teacher',q:'There is a substitute teacher today. What is respectful?',o:['Follow class rules and help politely','Test every rule','Ignore them','Tell them wrong directions'],a:0,x:'Class rules still matter with a substitute.'},
+  {e:'🏫',kind:'Hallway',q:'In the hallway, what helps everyone?',o:['Walk quietly on the right side','Run and shout','Touch every wall','Block the door'],a:0,x:'Hallway rules keep the school calm and safe.'},
+  {e:'🧪',kind:'Group materials',q:'Your table has shared materials. What is fair?',o:['Use your share and pass items along','Keep everything','Hide the best pieces','Grab first every time'],a:0,x:'Shared materials are for the whole group.'},
+  {e:'📌',kind:'Reminder',q:'You forget a classroom rule. What can you do?',o:['Look for the reminder or ask','Pretend rules vanished','Laugh at the rule','Break it first'],a:0,x:'Asking and checking helps you remember.'},
+  {e:'🧁',kind:'Class party',q:'At a class party, what is polite?',o:['Wait your turn and say thank you','Grab extra first','Complain about snacks','Leave trash'],a:0,x:'Party manners keep celebrations happy.'}
+);
+function getGCADayIndex(){
+  var start=new Date(2026,0,1);
+  var today=new Date();today.setHours(0,0,0,0);
+  var day=Math.floor((today-start)/86400000)%30;
+  return day<0?day+30:day;
+}
+function getGCATodayData(){
+  var day=getGCADayIndex();
+  return GCADATA.map(function(cat){
+    var start=(day*2)%cat.qs.length;
+    return {cat:cat.cat,color:cat.color,qs:[cat.qs[start],cat.qs[(start+1)%cat.qs.length]]};
+  });
+}
 
 // Default stories from dad
 // ===== HELPERS =====
@@ -1209,6 +1358,7 @@ function go(id){
   else if(id==='nailstudio'){initNailStudio();}
   else if(id==='worldplace'){initWorldPlace();}
   else if(id==='crazygames'){initCrazyGames();}
+  else if(id==='goodchoices'){initGoodChoices();}
   else if(id==='nailstudio2'){initFashionStore();}
   else if(id==='cooking2'){initCookingShow();}
   else if(id==='petstore'){initPetStore();}
@@ -9991,6 +10141,69 @@ function spDoStep(){
   if(spStep>=spSteps.length){spScore+=t.pts;coins+=t.pts;uc();spop('🧖','Treatment Done!',t.e+' '+t.name+' complete!\nYou feel amazing! +🪙'+t.pts+' coins! 🌸');spActive=null;spStep=0;renderSPContent();}
   else renderSPContent();
 }
+
+// ===== GOOD CHOICES ACADEMY =====
+function initGoodChoices(){
+  var tabs=document.getElementById('gcaTabs');if(!tabs)return;
+  var data=getGCATodayData();
+  tabs.innerHTML=data.map(function(c,i){
+    var sel=i===gcaTab;
+    return '<div class="tab'+(sel?' on':'')+'" style="border-color:#90caf9;color:'+(sel?'#fff':c.color)+';background:'+(sel?c.color:'#fff')+'" onclick="setGCATab('+i+')">'+c.cat+'</div>';
+  }).join('');
+  renderGoodChoices();
+}
+function setGCATab(i){gcaTab=i;gcaIdx=0;gcaAnswered=false;initGoodChoices();}
+function renderGoodChoices(){
+  var el=document.getElementById('gcaContent');if(!el)return;
+  var data=getGCATodayData();var cat=data[gcaTab];var total=cat.qs.length;var done=gcaIdx>=total;var day=getGCADayIndex()+1;
+  var scoreEl=document.getElementById('gcaScore');if(scoreEl)scoreEl.textContent=gcaScore;
+  if(done){
+    var badge=gcaScore>=48?'🏆':gcaScore>=28?'🌟':'💪';
+    el.innerHTML='<div style="background:#fff;border:4px solid #90caf9;border-radius:28px;padding:22px;text-align:center;max-width:620px;margin:18px auto">'
+      +'<div style="font-size:64px">'+badge+'</div>'
+      +'<div style="font-size:24px;font-weight:900;color:'+cat.color+';margin-top:8px">Great choices!</div>'
+      +'<div style="font-size:15px;color:#546e7a;font-weight:800;margin-top:8px;line-height:1.6">You finished '+cat.cat+'.<br>Stars earned: '+gcaScore+'</div>'
+      +'<button onclick="gcaRestart()" style="margin-top:18px;background:'+cat.color+';color:#fff;border:none;border-radius:18px;padding:16px 30px;font-size:20px;font-weight:900;cursor:pointer">Play Again</button>'
+      +'</div>';
+    return;
+  }
+  var q=cat.qs[gcaIdx];var pct=Math.round((gcaIdx/total)*100);
+  el.innerHTML='<div style="max-width:720px;margin:0 auto">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">'
+    +'<div style="background:#fff;border:3px solid #bbdefb;border-radius:18px;padding:8px 14px;color:'+cat.color+';font-size:13px;font-weight:900">Daily Challenge · Day '+day+' · '+q.kind+'</div>'
+    +'<div style="font-size:12px;font-weight:900;color:#607d8b">Question '+(gcaIdx+1)+' / '+total+'</div>'
+    +'</div>'
+    +'<div style="height:12px;background:#bbdefb;border-radius:99px;overflow:hidden;margin-bottom:14px"><div style="height:100%;width:'+pct+'%;background:'+cat.color+';border-radius:99px"></div></div>'
+    +'<div style="background:#fff;border:4px solid #bbdefb;border-radius:28px;padding:20px;text-align:center;box-shadow:0 6px 0 rgba(21,101,192,.12)">'
+    +'<div style="font-size:58px;margin-bottom:8px">'+q.e+'</div>'
+    +'<div style="font-size:22px;line-height:1.35;font-weight:900;color:#263238">'+q.q+'</div>'
+    +'</div>'
+    +'<div id="gcaOpts" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">'
+    +q.o.map(function(opt,i){return '<div onclick="gcaAnswer('+i+')" class="qopt" style="background:#fff;border-color:#90caf9;color:'+cat.color+';min-height:86px;display:flex;align-items:center;justify-content:center">'+opt+'</div>';}).join('')
+    +'</div>'
+    +'<div id="gcaFeedback" style="display:none;margin-top:14px;background:#e3f2fd;border:3px solid #90caf9;border-radius:20px;padding:14px;font-size:16px;line-height:1.5;font-weight:800;color:#0d47a1;text-align:center"></div>'
+    +'</div>';
+}
+function gcaAnswer(i){
+  if(gcaAnswered)return;
+  gcaAnswered=true;
+  var cat=getGCATodayData()[gcaTab];var q=cat.qs[gcaIdx];var opts=document.querySelectorAll('#gcaOpts .qopt');var fb=document.getElementById('gcaFeedback');
+  for(var k=0;k<opts.length;k++){
+    opts[k].style.pointerEvents='none';
+    if(k===q.a){opts[k].style.background='#00c853';opts[k].style.color='#fff';opts[k].style.borderColor='#00c853';}
+  }
+  if(i===q.a){
+    gcaScore+=4;coins+=8;uc();
+    if(opts[i]){opts[i].style.transform='scale(1.04)';}
+    if(fb){fb.style.display='block';fb.innerHTML='✅ Nice choice! '+q.x+'<br><span style="font-size:13px">+4 stars and +8 coins</span>';}
+  }else{
+    if(opts[i]){opts[i].style.background='#ff1744';opts[i].style.color='#fff';opts[i].style.borderColor='#ff1744';}
+    if(fb){fb.style.display='block';fb.innerHTML='💛 Try this rule: '+q.x;}
+  }
+  var scoreEl=document.getElementById('gcaScore');if(scoreEl)scoreEl.textContent=gcaScore;
+  setTimeout(function(){gcaIdx++;gcaAnswered=false;renderGoodChoices();},1900);
+}
+function gcaRestart(){gcaIdx=0;gcaAnswered=false;renderGoodChoices();}
 
 // ===== INIT =====
 rCP();uc();

@@ -50,8 +50,8 @@ body{font-family:'Segoe UI',sans-serif;background:#7ecbff;min-height:100vh;overf
 /* building map - 3D */
 .bld{cursor:pointer;text-align:center;transition:transform .18s,filter .18s;filter:drop-shadow(0 6px 8px rgba(0,0,0,0.28))}
 .bld:hover{transform:scale(1.13) translateY(-6px);filter:drop-shadow(0 12px 16px rgba(0,0,0,0.38))}
-.bld-lbl{font-size:8px;font-weight:900;color:#fff;border-radius:5px;padding:1px 4px;margin-top:2px;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,0.4)}
-.bld-tag{font-size:7px;border-radius:5px;padding:1px 4px;margin-top:1px;display:inline-block}
+.bld-lbl{font-size:11px;font-weight:900;color:#fff;border-radius:5px;padding:2px 5px;margin-top:2px;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,0.4)}
+.bld-tag{font-size:9px;border-radius:5px;padding:2px 5px;margin-top:1px;display:inline-block}
 .bld-box{border-radius:10px;padding:4px 3px 4px;border-bottom:5px solid rgba(0,0,0,0.22);box-shadow:0 5px 0 rgba(0,0,0,0.18),inset 0 1px 0 rgba(255,255,255,0.3);position:relative;overflow:hidden}
 .bld-box::before{content:'';position:absolute;top:0;left:0;right:0;height:40%;background:rgba(255,255,255,0.18);border-radius:14px 14px 50% 50%/14px 14px 8px 8px;pointer-events:none}
 </style>
@@ -68,7 +68,7 @@ body{font-family:'Segoe UI',sans-serif;background:#7ecbff;min-height:100vh;overf
     <div id="gdot" style="background:linear-gradient(135deg,#ff1744,#d50000);color:#fff;border-radius:20px;padding:10px 20px;font-size:20px;font-weight:900;cursor:pointer;box-shadow:0 5px 14px rgba(255,23,68,0.4)" onclick="go('gift')">🎁 Gift!</div>
   </div>
 
-  <div style="flex:1;position:relative;overflow:hidden;min-height:480px">
+  <div style="position:relative;overflow:hidden;height:680px;flex-shrink:0;min-height:680px">
     <!-- Sky gradient -->
     <div style="position:absolute;inset:0;background:linear-gradient(180deg,#1a90e8 0%,#5ec5ff 35%,#a8e6ff 60%,#d4f5a0 60%,#7dcf3e 70%,#5aaa20 100%)"></div>
 
@@ -96,7 +96,7 @@ body{font-family:'Segoe UI',sans-serif;background:#7ecbff;min-height:100vh;overf
     </div>
 
     <!-- 3D Buildings - Row 5 (brand new games) -->
-    <div style="position:absolute;bottom:442px;left:0;right:0;display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding:0 3px">
+    <div style="position:absolute;bottom:474px;left:0;right:0;display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding:0 3px">
 
       <div class="bld" onclick="go('academy')">
         <div class="bld-box" style="background:linear-gradient(145deg,#ffd54f,#ff6f00)">
@@ -157,7 +157,7 @@ body{font-family:'Segoe UI',sans-serif;background:#7ecbff;min-height:100vh;overf
     </div>
 
     <!-- 3D Buildings - Row 4 (Play Place - special) -->
-    <div style="position:absolute;bottom:354px;left:0;right:0;display:flex;justify-content:center;padding:0 6px;gap:10px">
+    <div style="position:absolute;bottom:378px;left:0;right:0;display:flex;justify-content:center;padding:0 6px;gap:10px">
 
       <div class="bld" onclick="go('playplace')" style="width:28%">
         <div class="bld-box" style="background:linear-gradient(145deg,#f06292,#ad1457);padding:8px 4px 7px">
@@ -186,7 +186,7 @@ body{font-family:'Segoe UI',sans-serif;background:#7ecbff;min-height:100vh;overf
     </div>
 
     <!-- 3D Buildings - Row 3 (new games) -->
-    <div style="position:absolute;bottom:266px;left:0;right:0;display:grid;grid-template-columns:repeat(8,1fr);gap:3px;padding:0 3px">
+    <div style="position:absolute;bottom:282px;left:0;right:0;display:grid;grid-template-columns:repeat(8,1fr);gap:3px;padding:0 3px">
 
       <div class="bld" onclick="go('slime')">
         <div class="bld-box" style="background:linear-gradient(145deg,#80deea,#00838f)">
@@ -255,7 +255,7 @@ body{font-family:'Segoe UI',sans-serif;background:#7ecbff;min-height:100vh;overf
     </div>
 
         <!-- 3D Buildings - Row 1 (top row) -->
-    <div style="position:absolute;bottom:178px;left:0;right:0;display:grid;grid-template-columns:repeat(8,1fr);gap:4px;padding:0 4px">
+    <div style="position:absolute;bottom:186px;left:0;right:0;display:grid;grid-template-columns:repeat(8,1fr);gap:4px;padding:0 4px">
 
       <div class="bld" onclick="go('dress')">
         <div class="bld-box" style="background:linear-gradient(145deg,#f06292,#e91e8c)">
@@ -324,7 +324,7 @@ body{font-family:'Segoe UI',sans-serif;background:#7ecbff;min-height:100vh;overf
     </div>
 
     <!-- 3D Buildings - Row 1b (overflow) -->
-    <div style="position:absolute;bottom:134px;left:0;right:0;display:flex;justify-content:center;gap:6px;padding:0 6px">
+    <div style="position:absolute;bottom:570px;left:0;right:0;display:flex;justify-content:center;gap:6px;padding:0 6px">
 
       <div class="bld" onclick="go('petgame')">
         <div class="bld-box" style="background:linear-gradient(145deg,#f8bbd0,#ad1457)">
@@ -430,7 +430,7 @@ body{font-family:'Segoe UI',sans-serif;background:#7ecbff;min-height:100vh;overf
     </div>
 
 <!-- Walking character with shadow -->
-    <div style="position:absolute;bottom:92px;left:45%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.3))">
+    <div style="position:absolute;bottom:58px;left:45%;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.3))">
       <div id="mc" style="font-size:44px;transition:left 1.2s ease">🧒</div>
       <div style="width:36px;height:8px;background:radial-gradient(ellipse,rgba(0,0,0,0.25) 0%,transparent 70%);border-radius:50%;margin:-6px auto 0"></div>
     </div>
@@ -1114,7 +1114,7 @@ body{font-family:'Segoe UI',sans-serif;background:#7ecbff;min-height:100vh;overf
 <div id="goodchoices" class="scr">
   <div class="hud" style="background:linear-gradient(135deg,#1565c0,#42a5f5);border-bottom:4px solid #0d47a1">
     <button class="bbtn" style="background:#0d47a1" onclick="go('map')">← Back</button>
-    <div class="htitle" style="color:#fff;font-size:17px">🌟 Good Choices Academy!</div>
+    <div class="htitle" style="color:#fff;font-size:17px">🌟 Good Choices 好习惯学院!</div>
     <div class="cpill" style="background:#e3f2fd;border-color:#90caf9;color:#0d47a1">⭐<span id="gcaScore">0</span></div>
   </div>
   <div class="tabs" style="background:#e3f2fd;border-bottom:3px solid #90caf9" id="gcaTabs"></div>
@@ -1306,6 +1306,146 @@ GCADATA[3].qs.push(
   {e:'📌',kind:'Reminder',q:'You forget a classroom rule. What can you do?',o:['Look for the reminder or ask','Pretend rules vanished','Laugh at the rule','Break it first'],a:0,x:'Asking and checking helps you remember.'},
   {e:'🧁',kind:'Class party',q:'At a class party, what is polite?',o:['Wait your turn and say thank you','Grab extra first','Complain about snacks','Leave trash'],a:0,x:'Party manners keep celebrations happy.'}
 );
+// ===== BILINGUAL: Chinese translations attached by index (English data untouched) =====
+GCADATA[0].catz='日常生活';
+GCADATA[1].catz='朋友相处';
+GCADATA[2].catz='外出';
+GCADATA[3].catz='学校';
+var GCA_KINDZH={
+'Pick one':'选一个','Yes or No':'是或否','Best order':'先做什么','Calm body':'让身体冷静',
+'Sharing':'分享','Kind words':'友善的话','Problem solving':'解决问题','Body rule':'身体界限',
+'Safety':'安全','Stay together':'待在一起','Care for places':'爱护环境','Museum voice':'室内声音',
+'Ready habit':'准备习惯','Class rule':'课堂规则','Learning habit':'学习习惯','Teamwork':'团队合作',
+'Clean hands':'洗手','Put away':'收拾','Morning habit':'早晨习惯','Screen rule':'看屏幕规则',
+'Healthy body':'健康身体','Laundry':'洗衣服','Polite words':'礼貌用语','Bedtime':'睡觉时间',
+'Try food':'尝试食物','Responsibility':'责任','Listening':'倾听','Supplies':'用品',
+'Comfort':'安慰','Game rule':'游戏规则','Secret':'秘密','Taking turns':'轮流',
+'Apology':'道歉','Gratitude':'感恩','Different ideas':'不同想法','Personal space':'身体空间',
+'Store rule':'商店规则','Street safety':'过马路安全','Waiting':'等待','Movie place':'看电影',
+'Sun safety':'防晒','Animals':'小动物','Bathroom trip':'上厕所','Emergency':'紧急情况',
+'Nature':'大自然','Buying':'购买','Work habit':'学习习惯','Voice level':'声音大小',
+'Respect':'尊重','Lunch':'午餐','Planning':'计划','Help':'求助',
+'Backpack':'书包','Bus rule':'校车规则','Curiosity':'好奇心','Reading':'阅读',
+'Helper habit':'帮忙习惯','Bathroom habit':'卫生间习惯','Getting dressed':'穿衣',
+'Include others':'接纳别人','Teasing':'开玩笑','Sharing space':'共享空间','Disagreeing':'意见不同',
+'Fair play':'公平游戏','Trip bag':'出门行李','Crowds':'人多的地方','Tickets':'票',
+'Leaving':'离开前','Strangers':'陌生人','Patience':'耐心','Show time':'看表演',
+'Car door':'车门','Lost rule':'走丢了','Line rule':'排队规则','Transition':'转换活动',
+'Partner work':'同伴合作','Focus':'专注','Organization':'整理','Water break':'喝水',
+'Listening center':'听力区','Calm down':'平静下来','Growth mindset':'成长心态',
+'Substitute teacher':'代课老师','Hallway':'走廊','Group materials':'小组材料',
+'Reminder':'提醒','Class party':'班级聚会'
+};
+var GCAZH=[
+// ---- GCADATA[0] Daily Life (17) ----
+[
+{qz:'你一醒来就想马上玩。最好先做什么？',oz:['刷牙、穿好衣服','躲在被子里','准备前先看视频','整天穿着睡衣'],xz:'先照顾好自己的身体，一整天都会更轻松。'},
+{qz:'吃饭时，嘴里有食物时说话好吗？',oz:['好呀，很好玩','不好，先嚼完咽下去'],xz:'先嚼完再说话，这样既安全又有礼貌。'},
+{qz:'玩完后玩具散在地上。接下来该怎么做？',oz:['先收好玩具，再做别的事','直接跨过去','等别人来收','把它们塞到床底下'],xz:'收拾也是玩耍的一部分，能让房间整洁又安全。'},
+{qz:'游戏结束了，你很生气。可以怎么做？',oz:['跺脚大叫','深呼吸三次，用语言表达','摔玩具','说难听的话'],xz:'有强烈情绪很正常，但要保持身体安全、用友善的话。'},
+{qz:'放学回到家，吃零食前该做什么？',oz:['先洗手','把零食都摸一遍','把手在衣服上擦','手看着干净就不洗'],xz:'手上会有看不见的细菌，先洗手再吃。'},
+{qz:'你的鞋子放在过道上。最好怎么做？',oz:['就放那儿','放到门口或鞋柜里','把它们踢开','藏起来一只'],xz:'过道通畅，大家走路才安全。'},
+{qz:'怎样让房间看起来精神又整齐？',oz:['把床铺整理好','把枕头扔地上','被子乱成一团','在床上蹦跳'],xz:'一个小小的整理习惯能让房间更舒服。'},
+{qz:'大人说看屏幕的时间到了。你该怎么做？',oz:['暂停并关掉','求再玩一个小时','把平板藏起来','生气大叫'],xz:'时间到了能停下来，说明你很有自控力。'},
+{qz:'跑跑跳跳玩完后，身体需要什么？',oz:['喝水','只吃糖','一直不休息','大声尖叫'],xz:'玩累后喝水，身体会更舒服。'},
+{qz:'脏衣服应该放在哪里？',oz:['地板上','洗衣篮里','枕头底下','厨房桌上'],xz:'放进洗衣篮，衣服才能被洗干净。'},
+{qz:'你需要别人帮忙打开东西，可以怎么说？',oz:['马上打开！','可以请你帮我吗？','我什么都做不了','给我！'],xz:'说"请"，请求帮助会更友善清楚。'},
+{qz:'到了睡觉时间，做什么能帮身体休息？',oz:['刷牙、安静下来','开始玩吵闹的游戏','在家里跑来跑去','再要看十个视频'],xz:'安静的睡前习惯能帮大脑入睡。'},
+{qz:'晚饭有道新菜，怎样做才有礼貌？',oz:['大声说"好恶心"','尝一小口或说"不用了，谢谢"','对大家做鬼脸','把它推开'],xz:'你可以诚实，同时也保持礼貌。'},
+{qz:'你把积木撒了一地，该怎么办？',oz:['把它们收起来','赶紧走开','怪别人','用毯子盖住'],xz:'谁弄乱的，谁就帮忙收拾。'},
+{qz:'你看到椅子下有食物碎屑，怎样做才帮得上忙？',oz:['扫干净或请人帮忙清理','留着以后再说','踩上去','把椅子挪过去盖住'],xz:'小小的帮忙能让家更舒适。'},
+{qz:'用完肥皂后，水龙头该怎么处理？',oz:['关掉','让它一直流','把水溅到镜子上','直接走开'],xz:'关掉水龙头能节约用水，也让洗手台保持干净。'},
+{qz:'找不到一双配对的袜子，可以怎么做？',oz:['冷静地求助或换一双','把衣服扔得到处都是','还没找就先哭','怪袜子'],xz:'冷静地想办法，能更快准备好。'}
+],
+// ---- GCADATA[1] Friends (19) ----
+[
+{qz:'朋友想玩一下你的游戏。怎样才公平？',oz:['说"休想！"','商量轮流玩','抓得更紧','拿着走开'],xz:'轮流的约定能让大家都参与进来。'},
+{qz:'同学犯了个错误，你可以说什么？',oz:['你真差劲','我可以帮你','大家一起笑','你不行'],xz:'有帮助的话能让友谊更牢固。'},
+{qz:'两个朋友想玩不同的游戏，可以试试什么？',oz:['只听我的','投票、轮流或把想法结合','不做朋友了','说他们错了'],xz:'好朋友会一起找公平的办法。'},
+{qz:'有人说"停下，我不喜欢这样。"你该怎么做？',oz:['马上停下','再做一次','哈哈大笑','说他们太敏感'],xz:'"停"就是停。听别人的话能让大家都安全。'},
+{qz:'朋友在讲故事，怎样做才友善？',oz:['看着他、认真听','一直打断','他说话时走开','马上转移话题'],xz:'认真听，让朋友知道他很重要。'},
+{qz:'朋友正在用你想要的颜色，可以怎么做？',oz:['抢过来','等他用完再借','把蜡笔掰断','说这永远是我的'],xz:'礼貌地等着轮流，画画时光会更愉快。'},
+{qz:'同学看起来很难过，怎样做比较好？',oz:['问问他还好吗','嘲笑他','到处去说','一直不理他'],xz:'一句温暖的问候，能让人不那么孤单。'},
+{qz:'比赛输了，你可以说什么？',oz:['这局玩得真好','总是不公平','我讨厌死了','你好慢'],xz:'无论输赢，有风度都很重要。'},
+{qz:'朋友告诉你一个小小的私密烦恼，你该怎么做？',oz:['告诉全班','替他保密，除非有人不安全','发到群里','拿来开玩笑'],xz:'私密的心事要被尊重；但若有危险，要找大人帮忙。'},
+{qz:'两个小朋友都想要同一块拼图，怎么办好？',oz:['轮流试一试','扔掉','藏起来','不拼了'],xz:'轮流来，大家就能继续一起玩。'},
+{qz:'你不小心撞到了别人，该说什么？',oz:['对不起，你没事吧？','让开！','是你的错','什么都不说'],xz:'及时道歉，能弥补一个小意外。'},
+{qz:'朋友分给你一张贴纸，你会说什么？',oz:['谢谢你','只有一张吗？','我想要更好的','总算给了'],xz:'说"谢谢"，让别人知道你感受到了善意。'},
+{qz:'朋友喜欢一个你不喜欢的游戏，怎样做才尊重他？',oz:['说它又无聊又烂','说"我不太喜欢，但你可以喜欢"','再也不理他','哈哈笑'],xz:'朋友之间可以喜欢不一样的东西。'},
+{qz:'有人正安静地坐着，抱他之前你该做什么？',oz:['先问一下','扑到他身上','拉他的胳膊','大喊"惊喜"'],xz:'先征求同意，是尊重别人的身体空间。'},
+{qz:'有小朋友想加入你的游戏，可以怎么做？',oz:['如果还有位置，给他安排个角色','没想就拒绝','假装没听见','叫他走开'],xz:'接纳别人，游戏会更好玩。'},
+{qz:'一个玩笑让朋友看起来不高兴了，你该怎么做？',oz:['停下来关心他','更大声地继续开玩笑','叫他别太敏感','叫更多人来笑'],xz:'如果有人觉得受伤，玩笑就不好玩了。'},
+{qz:'你的饮料离朋友的画很近，怎样做更聪明？',oz:['把它移开，远离画纸','在画上方晃来晃去','放在画上','故意碰倒它玩'],xz:'小心一点，能保护别人的作品。'},
+{qz:'你和朋友意见不同，怎么说才尊重？',oz:['我有不同的想法','你永远是错的','真傻','只有我的想法好'],xz:'不同的意见也可以友善地表达。'},
+{qz:'朋友第一次玩这个游戏，怎样能帮到他？',oz:['友善地讲解规则','他出错时嘲笑','改规则好让自己赢','立刻不玩了'],xz:'友善地教别人，游戏才公平又愉快。'}
+],
+// ---- GCADATA[2] Outings (23) ----
+[
+{qz:'车子开动前，你要做什么？',oz:['系好安全带','站起来看得更清楚','打开车门','把脚放到座位上'],xz:'每次坐车都一定要系安全带。'},
+{qz:'在公园里，你看到远处有有趣的东西，最好怎么做？',oz:['自己跑过去','请大人陪你一起去','开玩笑躲起来','跟着陌生人'],xz:'外出时，要待在大人看得见的地方。'},
+{qz:'在外面吃完零食，包装纸该放哪里？',oz:['丢地上','扔进垃圾桶或自己的包里','藏到树后','扔进水里'],xz:'有礼貌的游客会让地方保持干净。'},
+{qz:'在安静的公共场所，用什么声音最合适？',oz:['室内的小声音','尖叫声','边跑边喊','尽量大声唱歌'],xz:'小声说话，别人也能好好享受这个地方。'},
+{qz:'在商店里，你的手该怎么做？',oz:['得到允许才碰','把所有东西都打开','在每个货架上乱摸','把东西藏起来'],xz:'商店是大家共用的，碰之前先问一下。'},
+{qz:'过马路前，你应该：',oz:['停下、看路、跟紧大人','飞快跑过去','只盯着自己的鞋','闭上眼睛'],xz:'过马路要慢慢看，还要跟着大人。'},
+{qz:'玩游乐设施要排很长的队，怎样做可以？',oz:['耐心等轮到自己','挤到最前面','一直大声抱怨','离开队伍又偷偷插回来'],xz:'排队能让每个人都公平地轮到。'},
+{qz:'看电影时，应该用什么声音？',oz:['需要时小声说','像在户外那样喊','唱歌','弄出很大的吃零食声'],xz:'小声一点，大家才能好好看电影。'},
+{qz:'大晴天去操场玩前，可能需要什么？',oz:['大人说要的话，涂防晒或戴帽子','只戴冬天的围巾','不穿鞋','手上涂颜料'],xz:'做好防晒，皮肤在户外才更安全。'},
+{qz:'你在外面看到一只可爱的狗，规则是什么？',oz:['摸之前先问主人','跑过去抱它','拉它的尾巴','喂它糖'],xz:'摸别人的宠物之前，一定要先问。'},
+{qz:'在公共场所想上厕所，你该怎么做？',oz:['告诉大人','自己一个人走开','让陌生人带你去','憋到很着急'],xz:'大人应该知道你在哪里。'},
+{qz:'如果看不到你的大人，怎样最安全？',oz:['待在原地，找工作人员或可信的大人求助','跑到外面去','躲起来','跟着别的家庭'],xz:'待在原地，大人更容易找到你。'},
+{qz:'在步道上，怎样做才有公德心？',oz:['走在路径上','把花都摘了','朝树扔石头','乱丢垃圾'],xz:'走在路径上，能保护人，也保护大自然。'},
+{qz:'外出时你想买点好吃的，可以怎么说？',oz:['我们可以买一个吗？','马上买！','我永远需要它','我要尖叫了'],xz:'礼貌地问，是最好的开始。'},
+{qz:'出门前，你应该检查什么？',oz:['水、外套或需要的东西','只带玩具','什么都不检查','别人的包'],xz:'出门前检查一下，旅程会更顺利。'},
+{qz:'在人多的地方，你该待在哪里？',oz:['紧挨着大人','一个人跑很远','跟在陌生人后面','自己进店里'],xz:'人多时，靠近大人才更安全。'},
+{qz:'你拿到一张票或手环，该怎么做？',oz:['好好保管','把它揉烂','和陌生人交换','扔掉'],xz:'票能让你进场、好好玩。'},
+{qz:'离开一个地方前，有什么好习惯？',oz:['检查自己的东西','第一个冲出去','把垃圾留下','拿走别人的东西'],xz:'检查一下，才能把自己的东西都带回家。'},
+{qz:'陌生人给你糖，你该怎么做？',oz:['先问大人','赶紧拿走','跟他走','悄悄藏起来'],xz:'接受别人的东西前，要让大人知道。'},
+{qz:'上菜要等很久，你可以做什么？',oz:['安静地等或小声聊天','拍桌子','冲服务员喊','到处乱跑'],xz:'在公共场所，耐心也是一种礼貌。'},
+{qz:'看演出时，有人在表演，怎样做才尊重？',oz:['认真看，在合适的时候鼓掌','一直大声说话','站到座位上','挡住别人'],xz:'表演者和观众都需要被尊重。'},
+{qz:'到了目的地，谁来开车门？',oz:['大人开，或大人说安全了再开','车还在动时自己开','陌生人','永远没人开'],xz:'开车门要由大人确认安全。'},
+{qz:'如果你觉得走丢了，可以对工作人员说什么？',oz:['我需要帮忙找我的大人','带我去哪都行','你们有游戏吗？','算了'],xz:'说清楚，可信的大人才能帮到你。'}
+],
+// ---- GCADATA[3] School (29) ----
+[
+{qz:'怎样让上学的早晨更顺利？',oz:['前一晚收拾好书包','最后一秒才找作业','鞋子随便乱放','每天不吃早饭'],xz:'提前准备，早晨会更从容。'},
+{qz:'老师在讲话时你知道答案了，该怎么做？',oz:['直接喊出来','举手等待','抢着别人说话','离开座位'],xz:'举手发言，大家才都有机会学习。'},
+{qz:'作业觉得很难，第一步怎么做好？',oz:['说"我不做了"','先做一小部分，再求助','把纸撕了','飞快地全靠猜'],xz:'一小步加上求助，难题也能完成。'},
+{qz:'你们小组有任务要完成，怎样帮到团队？',oz:['做好自己那份','让别人全干','对所有人发号施令','不理小组'],xz:'每个人都出一份力，团队才最棒。'},
+{qz:'你提前做完了课堂作业，怎样做比较好？',oz:['检查作业或安静看书','打扰同学','敲铅笔','走出教室'],xz:'做完后安静下来，能帮全班继续学习。'},
+{qz:'在图书馆里，用什么声音最合适？',oz:['耳语或小声','操场上的大嗓门','搞怪大叫','像打鼓一样吵'],xz:'图书馆要安静，大家才能看书。'},
+{qz:'老师在讲要求时，你的身体该怎么做？',oz:['眼睛耳朵都准备好','转来转去','和旁边的人说话','钻到桌子底下'],xz:'身体准备好，更容易听懂要求。'},
+{qz:'午餐时，怎样做才友善？',oz:['吃自己的饭、讲礼貌','取笑别人的食物','扔餐巾纸','拿别人的零食'],xz:'大家互相尊重，午餐才更愉快。'},
+{qz:'明天要交作业，怎样做有帮助？',oz:['先做完再玩，或定个计划','忘掉它','藏起来','说它不见了'],xz:'有计划，作业就没那么吓人了。'},
+{qz:'有节课你没听懂，可以怎么做？',oz:['提个问题','一直假装懂','对着课本笑','不上学了'],xz:'提问能让你的大脑成长。'},
+{qz:'书包里的饮料洒了，你该怎么办？',oz:['告诉大人并帮忙清理','藏着直到发臭','怪书包','在上面盖些纸'],xz:'早点说出来，问题更好解决。'},
+{qz:'在校车上，怎样能让大家安全？',oz:['面朝前坐好','车开着时站起来','扔东西','堵住过道'],xz:'遵守校车规则，能保护车上每个人。'},
+{qz:'上科学课你想碰实验材料，先做什么？',oz:['等老师说明','飞快抓过来','尝一尝','把所有东西混在一起'],xz:'用科学器材要按说明小心操作。'},
+{qz:'有个字很难读，怎样能帮到你？',oz:['拼读出来或求助','跳过所有难字','撕掉那一页','说阅读不好'],xz:'用点方法，难字会越来越容易。'},
+{qz:'写作业时铅笔断了，你该怎么做？',oz:['削一削或借一支','扔掉','完全不写了','不问就拿同学的'],xz:'学校里的小麻烦可以冷静解决。'},
+{qz:'全班排队时，你该怎么做？',oz:['站在自己的位置，双手不乱动','往前挤','跳来跳去撞到人','离开队伍'],xz:'排好队，全班才安全有序。'},
+{qz:'铃响了，或老师说收拾，接下来怎么做？',oz:['停下来，听下一个指令','一直玩','把材料藏起来','顶嘴'],xz:'第一次就听话，换活动会更顺利。'},
+{qz:'你的同伴有个想法，你该怎么做？',oz:['先听听再决定','马上拒绝','把所有事都抢过来','不理他'],xz:'两个人的声音都重要，合作才最好。'},
+{qz:'写作业时听到一些声音，怎样能帮你？',oz:['把注意力收回到作业上，再试一次','跟着一起闹','离开椅子','放弃'],xz:'多练习，专注力会回来。'},
+{qz:'做完的纸张该放哪里？',oz:['文件夹或上交的地方','地板上','饭盒里','书架后面'],xz:'整理好的纸张更容易找到。'},
+{qz:'在饮水处，怎样做才公平？',oz:['喝一口就让下一个人','一直占着','把水溅得到处都是','插队'],xz:'快点轮流，大家都能喝到水。'},
+{qz:'用班级耳机时，怎样做才小心？',oz:['轻拿轻放、音量适中','拉扯耳机线','对着它大喊','把它摔在桌上'],xz:'班级的物品要轻拿轻放。'},
+{qz:'如果学校太吵，你可以试试什么？',oz:['深呼吸或请求安静休息一下','喊得更大声','推别人','跑掉'],xz:'用平静的方法，能让身体重新感到安全。'},
+{qz:'作业上犯了错，你可以怎么想？',oz:['犯错能帮我学习','我什么都不行','我应该藏起来','没人能帮我'],xz:'犯错是学习的一部分。'},
+{qz:'今天来了代课老师，怎样做才尊重？',oz:['遵守班规、礼貌地帮忙','故意挑战每条规则','不理他','故意指错路'],xz:'换了代课老师，班规一样要遵守。'},
+{qz:'在走廊里，怎样做对大家都好？',oz:['靠右安静地走','又跑又喊','摸遍每面墙','堵住门'],xz:'遵守走廊规则，学校才安静又安全。'},
+{qz:'你们桌上有共用材料，怎样才公平？',oz:['用自己那份，再传给别人','全都占着','把最好的藏起来','每次都先抢'],xz:'共用的材料是属于整个小组的。'},
+{qz:'你忘了一条班规，可以怎么做？',oz:['看看提示牌或问一问','假装规则没了','嘲笑规则','先违反再说'],xz:'问一问、看一看，能帮你记住。'},
+{qz:'班级聚会时，怎样做才有礼貌？',oz:['耐心轮流并说谢谢','先多抢一些','抱怨零食','乱丢垃圾'],xz:'有礼貌，聚会才更开心。'}
+]
+];
+// Attach Chinese to each question by index (English remains intact)
+for(var _ci=0;_ci<GCAZH.length;_ci++){
+  if(!GCADATA[_ci])continue;
+  for(var _qi=0;_qi<GCAZH[_ci].length;_qi++){
+    var _q=GCADATA[_ci].qs[_qi];var _z=GCAZH[_ci][_qi];
+    if(_q&&_z){_q.qz=_z.qz;_q.oz=_z.oz;_q.xz=_z.xz;}
+  }
+}
 function getGCADayIndex(){
   var start=new Date(2026,0,1);
   var today=new Date();today.setHours(0,0,0,0);
@@ -1315,8 +1455,11 @@ function getGCADayIndex(){
 function getGCATodayData(){
   var day=getGCADayIndex();
   return GCADATA.map(function(cat){
-    var start=(day*2)%cat.qs.length;
-    return {cat:cat.cat,color:cat.color,qs:[cat.qs[start],cat.qs[(start+1)%cat.qs.length]]};
+    var n=cat.qs.length;
+    var start=(day*4)%n;
+    var qs=[];
+    for(var k=0;k<4;k++){qs.push(cat.qs[(start+k)%n]);}
+    return {cat:cat.cat,catz:cat.catz,color:cat.color,qs:qs};
   });
 }
 
@@ -10148,7 +10291,7 @@ function initGoodChoices(){
   var data=getGCATodayData();
   tabs.innerHTML=data.map(function(c,i){
     var sel=i===gcaTab;
-    return '<div class="tab'+(sel?' on':'')+'" style="border-color:#90caf9;color:'+(sel?'#fff':c.color)+';background:'+(sel?c.color:'#fff')+'" onclick="setGCATab('+i+')">'+c.cat+'</div>';
+    return '<div class="tab'+(sel?' on':'')+'" style="border-color:#90caf9;color:'+(sel?'#fff':c.color)+';background:'+(sel?c.color:'#fff')+'" onclick="setGCATab('+i+')">'+c.cat+(c.catz?' '+c.catz:'')+'</div>';
   }).join('');
   renderGoodChoices();
 }
@@ -10161,25 +10304,26 @@ function renderGoodChoices(){
     var badge=gcaScore>=48?'🏆':gcaScore>=28?'🌟':'💪';
     el.innerHTML='<div style="background:#fff;border:4px solid #90caf9;border-radius:28px;padding:22px;text-align:center;max-width:620px;margin:18px auto">'
       +'<div style="font-size:64px">'+badge+'</div>'
-      +'<div style="font-size:24px;font-weight:900;color:'+cat.color+';margin-top:8px">Great choices!</div>'
-      +'<div style="font-size:15px;color:#546e7a;font-weight:800;margin-top:8px;line-height:1.6">You finished '+cat.cat+'.<br>Stars earned: '+gcaScore+'</div>'
-      +'<button onclick="gcaRestart()" style="margin-top:18px;background:'+cat.color+';color:#fff;border:none;border-radius:18px;padding:16px 30px;font-size:20px;font-weight:900;cursor:pointer">Play Again</button>'
+      +'<div style="font-size:24px;font-weight:900;color:'+cat.color+';margin-top:8px">Great choices! 真棒！</div>'
+      +'<div style="font-size:15px;color:#546e7a;font-weight:800;margin-top:8px;line-height:1.6">You finished '+cat.cat+(cat.catz?' '+cat.catz:'')+'.<br>你完成了这一关！<br>Stars earned 获得星星: '+gcaScore+' ⭐</div>'
+      +'<button onclick="gcaRestart()" style="margin-top:18px;background:'+cat.color+';color:#fff;border:none;border-radius:18px;padding:16px 30px;font-size:20px;font-weight:900;cursor:pointer">Play Again 再玩一次</button>'
       +'</div>';
     return;
   }
   var q=cat.qs[gcaIdx];var pct=Math.round((gcaIdx/total)*100);
   el.innerHTML='<div style="max-width:720px;margin:0 auto">'
     +'<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">'
-    +'<div style="background:#fff;border:3px solid #bbdefb;border-radius:18px;padding:8px 14px;color:'+cat.color+';font-size:13px;font-weight:900">Daily Challenge · Day '+day+' · '+q.kind+'</div>'
-    +'<div style="font-size:12px;font-weight:900;color:#607d8b">Question '+(gcaIdx+1)+' / '+total+'</div>'
+    +'<div style="background:#fff;border:3px solid #bbdefb;border-radius:18px;padding:8px 14px;color:'+cat.color+';font-size:13px;font-weight:900">Day '+day+' · '+q.kind+(GCA_KINDZH[q.kind]?(' '+GCA_KINDZH[q.kind]):'')+'</div>'
+    +'<div style="font-size:12px;font-weight:900;color:#607d8b">Question 第 '+(gcaIdx+1)+' / '+total+' 题</div>'
     +'</div>'
     +'<div style="height:12px;background:#bbdefb;border-radius:99px;overflow:hidden;margin-bottom:14px"><div style="height:100%;width:'+pct+'%;background:'+cat.color+';border-radius:99px"></div></div>'
     +'<div style="background:#fff;border:4px solid #bbdefb;border-radius:28px;padding:20px;text-align:center;box-shadow:0 6px 0 rgba(21,101,192,.12)">'
     +'<div style="font-size:58px;margin-bottom:8px">'+q.e+'</div>'
-    +'<div style="font-size:22px;line-height:1.35;font-weight:900;color:#263238">'+q.q+'</div>'
+    +'<div style="font-size:21px;line-height:1.3;font-weight:900;color:#263238">'+q.q+'</div>'
+    +(q.qz?'<div style="font-size:20px;line-height:1.4;font-weight:900;color:#1565c0;margin-top:7px">'+q.qz+'</div>':'')
     +'</div>'
     +'<div id="gcaOpts" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">'
-    +q.o.map(function(opt,i){return '<div onclick="gcaAnswer('+i+')" class="qopt" style="background:#fff;border-color:#90caf9;color:'+cat.color+';min-height:86px;display:flex;align-items:center;justify-content:center">'+opt+'</div>';}).join('')
+    +q.o.map(function(opt,i){return '<div onclick="gcaAnswer('+i+')" class="qopt" style="background:#fff;border-color:#90caf9;color:'+cat.color+';min-height:86px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px"><div style="font-size:17px;font-weight:800">'+opt+'</div>'+(q.oz&&q.oz[i]?'<div style="font-size:16px;font-weight:800;color:#37474f">'+q.oz[i]+'</div>':'')+'</div>';}).join('')
     +'</div>'
     +'<div id="gcaFeedback" style="display:none;margin-top:14px;background:#e3f2fd;border:3px solid #90caf9;border-radius:20px;padding:14px;font-size:16px;line-height:1.5;font-weight:800;color:#0d47a1;text-align:center"></div>'
     +'</div>';
@@ -10195,10 +10339,10 @@ function gcaAnswer(i){
   if(i===q.a){
     gcaScore+=4;coins+=8;uc();
     if(opts[i]){opts[i].style.transform='scale(1.04)';}
-    if(fb){fb.style.display='block';fb.innerHTML='✅ Nice choice! '+q.x+'<br><span style="font-size:13px">+4 stars and +8 coins</span>';}
+    if(fb){fb.style.display='block';fb.innerHTML='✅ Nice choice! 答对啦！<br>'+q.x+(q.xz?'<br>'+q.xz:'')+'<br><span style="font-size:13px">+4 ⭐ stars 星星 · +8 🪙 coins 金币</span>';}
   }else{
     if(opts[i]){opts[i].style.background='#ff1744';opts[i].style.color='#fff';opts[i].style.borderColor='#ff1744';}
-    if(fb){fb.style.display='block';fb.innerHTML='💛 Try this rule: '+q.x;}
+    if(fb){fb.style.display='block';fb.innerHTML='💛 Try this rule 记住这条规则：<br>'+q.x+(q.xz?'<br>'+q.xz:'');}
   }
   var scoreEl=document.getElementById('gcaScore');if(scoreEl)scoreEl.textContent=gcaScore;
   setTimeout(function(){gcaIdx++;gcaAnswered=false;renderGoodChoices();},1900);
